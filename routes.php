@@ -31,7 +31,14 @@ $routes = [
     'container' => true,
   ],
   '/account/settings/edit' => [
-    'view' => 'account/settings.php',
+    'view' => 'account/edit.php',
+    'title' => 'Edit account settings',
+    'nav' => true,
+    'footer' => true,
+    'container' => true,
+  ],
+  '/account/profile' => [
+    'view' => 'account/profile.php',
     'title' => 'Edit account settings',
     'nav' => true,
     'footer' => true,
@@ -52,5 +59,13 @@ $routes = [
     'nav' => false,
     'footer' => false,
     'container' => false,
+  ],
+  //admin routes
+  '/dashboard/cakes/add' => [
+    'view' => 'user/admin/add-cake.php',
+    'title' => 'Add cakes',
+    'nav' => true,
+    'footer' => false,
+    'container' => true,
   ],
 ];

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 27, 2023 at 01:52 AM
+-- Generation Time: Nov 27, 2023 at 04:25 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -150,6 +150,8 @@ CREATE TABLE `users` (
   `password` varchar(100) NOT NULL,
   `firstname` varchar(50) NOT NULL,
   `lastname` varchar(50) NOT NULL,
+  `address` text NOT NULL,
+  `reset_token` varchar(255) NOT NULL,
   `updatedAt` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `createdAt` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -158,11 +160,11 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `username`, `email`, `password`, `firstname`, `lastname`, `updatedAt`, `createdAt`) VALUES
-(1, 'Cat', 'cat@gmail.com', '$argon2id$v=19$m=65536,t=4,p=1$REJGb05xUmhXTzMuZGdtMw$ZwS2MESmPz61Epd0hZlfBP+9m/YelUYp7o0xw0QeYqo', 'aaaaaaaa', 'AAAAAAAAAAAA', '2023-11-26 16:23:34', '2023-11-26 16:23:34'),
-(2, 'mari', 'marilili@gmail.com', '$argon2id$v=19$m=65536,t=4,p=1$QVI2ODV1V1ZYOGtwZTB4OQ$IYxL6UzU7iWKWbQjCvDssIr4F56DeINj20zaiF8WPlM', 'aaaaaaaa', 'adasd', '2023-11-26 22:30:42', '2023-11-26 22:30:42'),
-(3, 'lili', 'mail@gmail.com', '$argon2id$v=19$m=65536,t=4,p=1$SFE3NlhUMnlNekhpa2VtWA$4tno1MQYyeCPZRAcyDDu6EKOFhuNTnbZEiEJgMrnQ1Q', 'asdasd', 'adasd', '2023-11-26 22:32:18', '2023-11-26 22:32:18'),
-(4, 'cake', 'cake@gmail.com', '$argon2id$v=19$m=65536,t=4,p=1$T3Jhcld0SzdrTXIwNU9BTg$ZCy0q7f/6LBncWuBYU2/hGqzmAgaP8E5Isduv1HYUuE', 'ss', 'adasd', '2023-11-26 22:35:11', '2023-11-26 22:35:11');
+INSERT INTO `users` (`id`, `username`, `email`, `password`, `firstname`, `lastname`, `address`, `reset_token`, `updatedAt`, `createdAt`) VALUES
+(1, 'Cat', 'cat@gmail.com', '$argon2id$v=19$m=65536,t=4,p=1$REJGb05xUmhXTzMuZGdtMw$ZwS2MESmPz61Epd0hZlfBP+9m/YelUYp7o0xw0QeYqo', 'aaaaaaaa', 'AAAAAAAAAAAA', 'asdasd3424234', '', '2023-11-27 02:53:41', '2023-11-26 16:23:34'),
+(2, 'mari', 'marilili@gmail.com', '$argon2id$v=19$m=65536,t=4,p=1$QVI2ODV1V1ZYOGtwZTB4OQ$IYxL6UzU7iWKWbQjCvDssIr4F56DeINj20zaiF8WPlM', 'aaaaaaaa', 'adasd', '', '', '2023-11-26 22:30:42', '2023-11-26 22:30:42'),
+(3, 'lili', 'mail@gmail.com', '$argon2id$v=19$m=65536,t=4,p=1$SFE3NlhUMnlNekhpa2VtWA$4tno1MQYyeCPZRAcyDDu6EKOFhuNTnbZEiEJgMrnQ1Q', 'asdasd', 'adasd', '', '', '2023-11-26 22:32:18', '2023-11-26 22:32:18'),
+(4, 'cake', 'cake@gmail.com', '$argon2id$v=19$m=65536,t=4,p=1$T3Jhcld0SzdrTXIwNU9BTg$ZCy0q7f/6LBncWuBYU2/hGqzmAgaP8E5Isduv1HYUuE', 'ss', 'adasd', '', '', '2023-11-26 22:35:11', '2023-11-26 22:35:11');
 
 -- --------------------------------------------------------
 

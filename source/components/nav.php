@@ -114,7 +114,7 @@ $userexist = false;
           </div>
         </summary>
         <ul class="mt-2 p-2 shadow menu dropdown-content z-[1] bg-white rounded-box w-52">
-          <li><a href="/account/settings/edit" class="justify-between">Profile</a></li>
+          <li><a href="/account/profile" class="justify-between">Profile</a></li>
           <li><a href="/source/lib/user/member/change-theme.php" >Switch to ' . $theme . '</a></li>
           <li><a href="/account/favorites">Favorites</a></li>     
           <div class="divider px-4 my-2"></div> 
@@ -122,13 +122,10 @@ $userexist = false;
           <div class="divider px-4 mb-2"></div>
           <li>
             <details class="dropdown dropdown-left">
-              <summary class="m-1">Member dashboard</summary>
+              <summary class="m-1">Admin dashboard (beta)</summary>
               <ul class="mr-4 p-2 shadow menu dropdown-content z-[1] bg-base-200 rounded-box w-52">
                 <li><a href="/dashboard/cakes/delete">Remove cakes</a></li>
-                <li><a href="/dashboard/reports">Reports</a></li>
                 <li><a href="/dashboard/cakes/add">Add cake</a></li>
-                <li><a href="/dashboard/cakes/own">My cakes</a></li>
-                <li><a href="/admin/dashboard">Dashboard</a></li>
                
               </ul>
             </details>

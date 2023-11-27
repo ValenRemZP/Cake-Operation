@@ -11,13 +11,11 @@ function getAllCakes() {
     }
 
     if (strlen($cake['description']) > 100) {
-      $cake['description'] = substr_replace($cake['description'], '...', 101);
+      $product['description'] = substr_replace($cake['description'], '...', 101);
     }
   }
 
   return $cakes;
 }
-
-
 
 
