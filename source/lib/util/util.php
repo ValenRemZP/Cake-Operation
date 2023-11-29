@@ -70,6 +70,41 @@ function insert($query, ...$params) {
 
   $stmt = $connection->prepare($query);
 
+  if (!$stmt) {
+      // Error in preparing the statement
+      error_log("Error in preparing the statement: " . $connection->error);
+      return false;
+  }
+
+  if (!empty($params)) {
+      $paramTypes = '';
+      $paramValues = [];
+
+      foreach ($params as $param) {
+          $paramTypes .= $param['type'];
+          $paramValues[] = $param['value'];
+      }
+
+      $stmt->bind_param($paramTypes, ...$paramValues);
+  }
+
+  if (!$stmt->execute()) {
+      // Error in executing the statement
+      error_log("Error in executing the statement: " . $stmt->error);
+      $stmt->close();
+      $connection->close();
+      return false;
+  }
+
+  $stmt->close();
+  return true;
+}
+
+function fetchAll($query, ...$params) {
+  global $connection;
+
+  $stmt = $connection->prepare($query);
+
   if (!empty($params)) {
     $paramTypes = '';
     $paramValues = [];
@@ -88,6 +123,10 @@ function insert($query, ...$params) {
     return false;
   }
 
+  $result = $stmt->get_result();
+  $data = $result->fetch_all(MYSQLI_ASSOC);
+
   $stmt->close();
-  return true;
+
+  return $data;
 }

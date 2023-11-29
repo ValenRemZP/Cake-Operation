@@ -11,7 +11,7 @@ function getAllCakes() {
     }
 
     if (strlen($cake['description']) > 100) {
-      $product['description'] = substr_replace($cake['description'], '...', 101);
+      $cake['description'] = substr_replace($cake['description'], '...', 101);
     }
   }
 

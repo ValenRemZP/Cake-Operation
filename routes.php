@@ -47,11 +47,19 @@ $routes = [
   // product share
   '/products/share' => [
     'view' => 'catalog/share.php',
-    'title' => 'Products',
+    'title' => 'Cakes',
     'nav' => false,
     'footer' => false,
     'container' => true,
   ],
+  '/catalog/cake' => [
+    'view' => 'catalog/cake.php',
+    'title' => 'Cake',
+    'nav' => true,
+    'footer' => true,
+    'container' => true,
+  ],
+  
   // Error routes
   '/404' => [
     'view' => 'error/404.php',

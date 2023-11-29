@@ -37,6 +37,7 @@ define('ERROR_MAPPING', [
   'usernameTaken' => 'Username is already taken',
   'deletecake' => 'Failed to delete cake',
   'leaveReview' => 'Failed to leave review',
+  'cakeAdd' => 'Failed to add cake to the Database.',
 ]);
 
 // Success mapping
@@ -45,6 +46,8 @@ define('SUCCESS_MAPPING', [
   'accountUpdate' => 'Your account has been updated',
   'deletecake' => 'cake has been deleted',
   'leaveReview' => 'Review has been left',
+  'cakeAdd' => 'Succesfully added cake to the Database.',
+
 ]);
 
 // Theme mapping
