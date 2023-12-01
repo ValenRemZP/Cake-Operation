@@ -3,7 +3,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config.php';
 require_once LIBRARY . '/util/util.php';
 
 
-$cakeId = 1;
+$cakeId = $_GET['id'];
 $query = 'SELECT * FROM cakes WHERE id = ?';
 $cakeData = fetch($query, ['type' => 'i', 'value' => $cakeId]);
 

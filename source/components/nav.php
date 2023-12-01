@@ -21,8 +21,13 @@ $userexist = false;
  <!-- Left - logo -->
 <div class="navbar-start flex-1">
 <a href="/" class="hidden md:block">
-<i class="text-white font-serif text-2xl p-2">Mary cooking</i>
-<i class="fa-solid fa-cake-candles fa-bounce fa-lg" style="color: #ffffff;"></i>
+<style>
+i{
+  font-family: 'Brush Script MT', cursive;
+}
+</style>
+<i  class="text-white text-2xl p-2">Mary cooking</i>
+<i class="fa-solid fa-cake-candles fa-flip" style="color: #ffffff;"></i>
 </a>
     <!-- Dropdown menu on small devices -->
     <div class="dropdown">

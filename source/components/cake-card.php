@@ -2,18 +2,27 @@
 require_once $_SERVER['DOCUMENT_ROOT'] . '/config.php';
 require_once LIBRARY . '/util/util.php';
 
+
+function displayAllCakes($cakes) {
+    echo '<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">';
+    foreach ($cakes as $cake) {
+        cakeCard($cake, true);
+    }
+    echo '</div>';
+}
+
 function cakeCard($cake, $shareable = false) {
     $share = $shareable
-        ? '<div class="dropdown dropdown-end absolute top-5 right-4">
+        ? '<div class="dropdown dropdown-end absolute top-2 right-2">
                 <label tabindex="0" class="hover:cursor-pointer">
-                    <i class="fa-solid fa-ellipsis-vertical fa-2xl transition text-accent opacity-0 group-hover:opacity-100"></i>
+                <i class="fa-solid fa-ellipsis-vertical fa-2xl opacity-0 group-hover:opacity-100" style="color: #ff7185;"></i>
                 </label>
                 <ul tabindex="0" class="dropdown-content z-[1] p-2 shadow bg-base-100 rounded-box w-26 flex gap-2">
                     <button class="hover:cursor-pointer">
                         <form method="post" action="/source/lib/account/addfav.php">
                             <input type="hidden" name="cake_id" value="' . $cake["id"] . '">
                             <input type="hidden" name="refer" value="' . $_SERVER['REQUEST_URI'] . '">
-                            <button name="favorieten">
+                            <button name="favoriteIt">
                                 <svg class="w-6 h-6 hover:text-black text-gray-600 inline-block mx-1" aria-hidden="true"
                                     xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 21 19">
                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
@@ -34,13 +43,13 @@ function cakeCard($cake, $shareable = false) {
                     </button>
                 </ul>
             </div>'
-        : '';
+        : '';   
 
-    echo '
+        echo '
         <a href="/catalog/cake?id=' . $cake['id'] . '">
-            <div id="cake-' . $cake['id'] . '" class="group card card-compact transition hover:opacity-90 md:flex-1 bg-base-100 shadow-xl">
+            <div id="cake-' . $cake['id'] . '" class="group card card-compact transition hover:opacity-90 bg-base-100 shadow-xl" style="max-width: 300px;">
                 <figure>
-                    <img class="w-full" src="' . $cake["imageUrl"] . '" alt="' . $cake["name"] . '" />
+                    <img class="w-full h-50 object-cover" src="' . $cake["imageUrl"] . '" alt="' . $cake["name"] . '" />
                 </figure>
 
                 <div class="card-body transition relative">
@@ -57,4 +66,4 @@ function cakeCard($cake, $shareable = false) {
             </div>
         </a>';
 }
-?>
+?>  

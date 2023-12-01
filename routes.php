@@ -59,6 +59,13 @@ $routes = [
     'footer' => true,
     'container' => true,
   ],
+  '/catalog/cakes' => [
+    'view' => 'catalog/cakes.php',
+    'title' => 'Cake',
+    'nav' => true,
+    'footer' => true,
+    'container' => true,
+  ],
   
   // Error routes
   '/404' => [
@@ -76,4 +83,5 @@ $routes = [
     'footer' => false,
     'container' => true,
   ],
+
 ];

@@ -52,7 +52,7 @@ define('SUCCESS_MAPPING', [
 
 // Theme mapping
 define('THEME_MAPPING', [
-  'default' => 'customDark',
+  'default' => 'customLight',
   'dark' => 'customDark',
   'light' => 'customLight',
 ]);
