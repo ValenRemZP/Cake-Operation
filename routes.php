@@ -66,6 +66,13 @@ $routes = [
     'footer' => true,
     'container' => true,
   ],
+  '/buy-cake' => [
+    'view' => 'user/member/buy-cake.php',
+    'title' => 'Cake',
+    'nav' => true,
+    'footer' => true,
+    'container' => true,
+  ],
   
   // Error routes
   '/404' => [

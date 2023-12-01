@@ -25,7 +25,7 @@ if (isset($_POST['create'])) {
   );
 }
 
-header('Location: /');
+header('Location: /dashboard/cakes/add?success=cakeAdd');
 exit();
 
 function addProduct(

@@ -33,6 +33,7 @@ define('ERROR_MAPPING', [
   'password' => 'Passwords do not match',
   'email' => 'Email is already in use',
   'noChanges' => 'No changes were made',
+  'Purchase' => 'The purchase has not been successful.',
   'accountUpdate' => 'Something went wrong while updating your account',
   'usernameTaken' => 'Username is already taken',
   'deletecake' => 'Failed to delete cake',
@@ -45,6 +46,7 @@ define('SUCCESS_MAPPING', [
   'register' => 'You have been succesfully registered',
   'accountUpdate' => 'Your account has been updated',
   'deletecake' => 'cake has been deleted',
+  'Purchase' => 'The purchase has been successful.',
   'leaveReview' => 'Review has been left',
   'cakeAdd' => 'Succesfully added cake to the Database.',
 
