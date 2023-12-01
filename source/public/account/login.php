@@ -3,7 +3,11 @@ if (isset($_SESSION['user'])) {
   header('Location: /');
   exit();
 } ?>
-
+     <style>
+body {
+  font-family: "Brush Script MT", cursive;
+}
+</style>
 <div class="min-h-[100svh] w-full flex flex-col justify-center items-center p-8 h-14 bg-gradient-to-b from-white to-rose-400">
 <i class="fa-solid fa-cake-candles fa-spin fa-spin-reverse fa-xl" style="color: #ffffff;"></i>
 <br>
@@ -21,13 +25,13 @@ if (isset($_SESSION['user'])) {
     <div class="flex flex-col gap-4">
       <div class="form-control">
         <label class="label">
-          <span class="label-text text-white">Email</span>
+          <span class="label-text text-white text-xl">Email</span>
         </label>
         <input type="email" name="email" placeholder="CakeyMail!@gmai.com" class="input input-bordered bg-white" required />
       </div>
       <div class="form-control">
         <label class="label">
-          <span class="label-text text-white">Password</span>
+          <span class="label-text text-white text-xl">Password</span>
         </label>
         <input type="password" name="password" placeholder="Make it hard!" class="input input-bordered bg-white" required />
       </div>

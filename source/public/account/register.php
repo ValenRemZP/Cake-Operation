@@ -3,11 +3,15 @@ if (isset($_SESSION['user'])) {
   header('Location: /');
   exit();
 } ?>
-
+     <style>
+body {
+  font-family: "Brush Script MT", cursive;
+}
+</style>
 <div class="min-h-[100svh] w-full flex flex-col justify-center items-center p-8 h-14 bg-gradient-to-b from-white to-rose-400">
 <i class="fa-solid fa-cake-candles fa-spin fa-spin-reverse fa-xl" style="color: #ffffff;"></i>
 <br>
-  <div class="w-full flex justify-center text-sm breadcrumbs mb-2 text-white">
+  <div class="w-full flex justify-center text-md breadcrumbs mb-2 text-white">
     <ul>
       <li><a href="/">Home</a></li>
       <li>Account</li>
@@ -22,14 +26,14 @@ if (isset($_SESSION['user'])) {
       <div class="flex flex-col gap-4 md:flex-row">
         <div class="form-control md:flex-1">
           <label class="label">
-            <span class="label-text text-white">First name</span>
+            <span class="label-text text-xl text-white">First name</span>
           </label>
           <input type="text" name="firstname" placeholder="Mary Jane" class="bg-white input input-bordered w-full" required />
         </div>
         
         <div class="form-control md:flex-1">
           <label class="label">
-            <span class="label-text text-white">Last name</span>
+            <span class="label-text text-xl text-white">Last name</span>
           </label>
           <input type="text" name="lastname" placeholder="Watson" class="bg-white input input-bordered w-full" required />
         </div>
@@ -38,14 +42,14 @@ if (isset($_SESSION['user'])) {
       <div class="flex flex-col gap-4 md:flex-row">
         <div class="form-control md:flex-1">
           <label class="label">
-            <span class="label-text text-white">Email</span>
+            <span class="label-text text-xl text-white">Email</span>
           </label>
           <input type="email" name="email" placeholder="CakeyMail!@gmai.com" class="bg-white input input-bordered w-full" required />
         </div>
         
         <div class="form-control md:flex-1">
           <label class="label">
-            <span class="label-text text-white">Username</span>
+            <span class="label-text text-xl text-white">Username</span>
           </label>
           <input type="text" name="username" placeholder="Marilyn" class="bg-white input input-bordered w-full" required />
         </div>
@@ -53,15 +57,15 @@ if (isset($_SESSION['user'])) {
       
       <div class="flex flex-col gap-4 md:flex-row">
         <div class="form-control md:flex-1">
-          <label class="label">
-            <span class="label-text text-white">Password</span>
+          <label class="label"> 
+            <span class="label-text text-xl text-white">Password</span>
           </label>
           <input type="password" name="password" placeholder="Make it hard!" class="bg-white input input-bordered w-full" required />
         </div>
         
         <div class="form-control md:flex-1">
           <label class="label">
-            <span class="label-text text-white">Confirm password</span>
+            <span class="label-text text-xl text-white">Confirm password</span>
           </label>
           <input type="password" name="passwordConfirm" placeholder="Make sure!" class="bg-white input input-bordered w-full" required />
         </div>
