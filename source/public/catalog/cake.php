@@ -37,7 +37,7 @@ $cakeData = fetch($query, ['type' => 'i', 'value' => $cakeId]);
         <p class="font-semibold text-xl text-rose-300"> €<?= $cakeData["price"] ?></p>
         <div class="flex-[.7] p-8">
        
-        <form method="post" action="/buy-cake">
+        <form method="post" action="/add-cart">
   <input type="hidden" name="cake_id" value="<?= $cakeData['id'] ?>">
   <input type="hidden" name="cake_name" value="<?= $cakeData['name'] ?>">
   <input type="hidden" name="cake_price" value="<?= $cakeData['price'] ?>">

@@ -86,7 +86,7 @@ body{
     <div class="navbar-end flex-1 space-x-4">
         <!-- Cart -->
           <div class="hidden md:flex items-center">
-              <a href="/buy-cake" class="btn btn-square btn-ghost">
+              <a href="/cart" class="btn btn-square btn-ghost">
                   <i class="fa-solid fa-shopping-cart fa-inverse"></i>
               </a>
               <!-- Show cart item count -->
@@ -94,7 +94,7 @@ body{
   $cartCount = 0; 
 
   if ($user) {
-      $cartInfo = fetchSingle("SELECT COUNT(*) AS count FROM cart WHERE userid = ?", ['type' => 'i', 'value' => $user['id']]);
+      $cartInfo = fetchSin("SELECT COUNT(*) AS count FROM cart WHERE userid = ?", ['type' => 'i', 'value' => $user['id']]);
       if ($cartInfo && array_key_exists('count', $cartInfo)) {
           $cartCount = $cartInfo['count'];
       }
