@@ -2,25 +2,19 @@
 // Handle actions (add, delete, update quantity)
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST["cart_delete"])) {
-        // Handle delete from cart logic here
-        // ...
+   
     } elseif (isset($_POST["buy"])) {
-        // Handle buy selected logic here
-        // ...
+      
     } elseif (isset($_POST["delete_selected"])) {
-        // Handle delete selected logic here
-        // ...
+   
     } elseif (isset($_POST["update_quantity"])) {
         foreach ($_POST['quantity'] as $itemId => $newQuantity) {
-            // Handle update quantity logic here
-            // Use $itemId to identify the item in the cart and $newQuantity as the new quantity
-            // Update the quantity in the cart or database
-            // ...
+         
         }
     }
 }
 
-// Fetch user's cart items
+// Fetch user's cart items  MUST FIX THE REQUEST METHODESSS
 if ($user) {
     $userId = $_SESSION['user']['id'];
     $cartItems = fetchAll("SELECT * FROM cart WHERE userid = ?", ['type' => 'i', 'value' => $userId]);
