@@ -19,11 +19,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["cart_add"])) {
         $userId = $_SESSION['user']['id'];
 
         // Check if the item is already in the cart
-        $existingCartItem = fetchSingle("SELECT * FROM cart WHERE userid = ? AND cakeId = ?", ['type' => 'i', 'value' => $userId], ['type' => 'i', 'value' => $cakeId]);
+        $existingCartItem = fetchSingle("SELECT * FROM cart WHERE id = ? AND cakeId = ?", ['type' => 'i', 'value' => $userId], ['type' => 'i', 'value' => $cakeId]);
 
         if ($existingCartItem) {
             // Item already exists in the cart, update the quantity
-            $newQuantity = $existingCartItem['quantity'] ?? 0 + 1;
+            $newQuantity = isset($existingCartItem['quantity']) ? $existingCartItem['quantity'] + 1 : 1;
             $updateQuery = 'UPDATE cart SET quantity = ? WHERE id = ?';
             $updateSuccess = insert($updateQuery, ['type' => 'i', 'value' => $newQuantity], ['type' => 'i', 'value' => $existingCartItem['id']]);
         } else {
@@ -32,7 +32,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["cart_add"])) {
             $insertSuccess = insert($insertQuery, ['type' => 'i', 'value' => $userId], ['type' => 'i', 'value' => $cakeId], ['type' => 'i', 'value' => 1]);
         }
 
-       
+        // Handle the success or failure of the database operation here
+
+    } else {
+        // User is not logged in, add to cart in the session (for guests)
+        if (!isset($_SESSION['guest']['cart'])) {
+            $_SESSION['guest']['cart'] = [];
+        }
 
         // Check if the item is already in the session cart
         $existingCartItemIndex = array_search($cakeId, array_column($_SESSION['guest']['cart'], 'cake_id'));
