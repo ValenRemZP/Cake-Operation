@@ -22,7 +22,7 @@ $userexist = false;
 <div class="navbar-start flex-1">
 <a href="/" class="hidden md:block">
 <style>
-i{
+body{
   font-family: 'Brush Script MT', cursive;
 }
 </style>
@@ -119,18 +119,18 @@ i{
           </div>
         </summary>
         <ul class="mt-2 p-2 shadow menu dropdown-content z-[1] bg-white rounded-box w-52">
-          <li><a href="/account/profile" class="justify-between">Profile</a></li>
-          <li><a href="/source/lib/user/member/change-theme.php" >Switch to ' . $theme . '</a></li>
-          <li><a href="/account/favorites">Favorites</a></li>     
+          <li><a href="/account/profile" class="justify-between text-xl text-rose-500">Profile</a></li>
+          <li><a href="/source/lib/user/member/change-theme.php" class="text-xl text-rose-500">Switch to ' . $theme . '</a></li>
+          <li><a href="/account/favorites" class="text-xl text-rose-500">Favorites</a></li>     
           <div class="divider px-4 my-2"></div> 
-          <li><a href="/account/logout">Logout</a></li>
+          <li><a href="/account/logout"  class="text-xl text-rose-500">Logout</a></li>
           <div class="divider px-4 mb-2"></div>
           <li>
             <details class="dropdown dropdown-left">
-              <summary class="m-1">Admin dashboard (beta)</summary>
+              <summary class="m-1 text-xl text-rose-500">Admin dashboard (beta)</summary>
               <ul class="mr-4 p-2 shadow menu dropdown-content z-[1] bg-base-200 rounded-box w-52">
-                <li><a href="/dashboard/cakes/delete">Remove cakes</a></li>
-                <li><a href="/dashboard/cakes/add">Add cake</a></li>
+                <li><a href="/dashboard/cakes/delete"  class="text-xl text-rose-500">Remove cakes</a></li>
+                <li><a href="/dashboard/cakes/add"  class="text-xl text-rose-500">Add cake</a></li>
                
               </ul>
             </details>
@@ -156,7 +156,7 @@ i{
             <a href="/catalog/cakes?category=' . strtolower($category['name']) . '" class="text-center  items-center">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-10 h-10 group-hover:-translate-y-1 transition">
               </svg>
-              <span class="label-text text-white">' . $category['name'] . '</span>
+              <span class="label-text text-xl text-rose-500">' . $category['name'] . '</span>
             </a>
             ';
           }

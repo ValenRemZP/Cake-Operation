@@ -56,11 +56,17 @@ function cakeCard($cake, $shareable = false) {
 
                     ' . $share . '
 
-                    <a href="/catalog/cake?id=' . $cake['id'] . '" class="card-title hover:underline">' . $cake["name"] . '</a>
-                    <p>' . $cake["description"] . '</p>
-                    <div class="card-actions justify-between items-center">
-                        <p class="text-xl text-left font-bold">€' . $cake["price"] . '</p>
+                    <style>
+a, p {
+  font-family: "Brush Script MT", cursive;
+}
+</style>
 
+                    <a href="/catalog/cake?id=' . $cake['id'] . '" class="card-title hover:underline text-rose-400">' . $cake["name"] . '</a>
+                
+                    <div class="card-actions justify-between items-center">
+                        <p class="text-xl text-left font-bold text-rose-300">€' . $cake["price"] . '</p>
+                
                     </div>
                 </div>
             </div>

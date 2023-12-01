@@ -54,29 +54,29 @@ if (isset($_GET['search'])) {
 
 echo '
 <div class="w-full flex flex-col md:flex-row gap-4 p-8 md:pr-40">
-  <div class="hidden md:block md:flex-[.4] h-fit bg-base-300 py-8 rounded-2xl">
+  <div class="hidden md:block md:flex-[.4] h-fit bg-base-300 py-8 md:ml-auto rounded-2xl">
     <div>
       <form method="get" class="flex flex-col px-4 gap-8">
         <div class="flex flex-col gap-4">
           <div class="form-control w-full max-w-xs">
             <label class="label">
-              <span id="priceMinLabel" class="label-text">€' . $minPrice . '</span>
+              <span id="priceMinLabel" class="label-text text-rose-500">€' . $minPrice . '</span>
             </label>
             <div class="form-control w-full max-w-xs">  
-              <input id="priceMin" name="minPrice" type="range" min="' . $minPrice . '" max="' . $maxPrice . '" value="' . $minPrice . '" class="range range-accent" />
+              <input id="priceMin" name="minPrice" type="range" min="' . $minPrice . '" max="' . $maxPrice . '" value="' . $minPrice . '" class="range bg-rose-300" />
             </div>
           <div class="form-control w-full max-w-xs">
             <label class="label">
-              <span id="priceMaxLabel" class="label-text">€' . $maxPrice . '</span>
+              <span id="priceMaxLabel" class="label-text text-rose-500">€' . $maxPrice . '</span>
             </label>
             </div>
             <div class="form-control w-full max-w-xs">
-              <input id="priceMax" name="maxPrice" type="range" min="0" max="' . $maxPrice . '" value="' . $maxPrice . '" class="range range-accent" />
+              <input id="priceMax" name="maxPrice" type="range" min="0" max="' . $maxPrice . '" value="' . $maxPrice . '" class="range bg-rose-300" />
             </div>
           </div>
         </div>
 
-        <button class="btn btn-primary">Filter</button>
+        <button class="btn bg-rose-400 text-white">Filter</button>
       </form>
     </div>
   </div>
@@ -86,11 +86,11 @@ echo '
   <div class="hidden md:flex divider divider-horizontal"></div> 
 
   <div class="flex flex-row flex-wrap gap-8 flex-[1.6]">
-    <div class="w-full flex text-sm breadcrumbs">
+    <div class="w-full flex text-sm breadcrumbs text-xl text-rose-500">
       <ul>
         <li><a href="/">Home</a></li> 
         <li>Catalog</li>
-        <li><a href="/catalog/cakes">All Products</a></li>
+        <li><a href="/catalog/cakes">All cakes</a></li>
       </ul>
     </div>
     
