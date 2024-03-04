@@ -16,7 +16,10 @@ $cakeData = fetch($query, ['type' => 'i', 'value' => $cakeId]);
 </div>
 <div class="flex flex-col md:flex-row gap-4">
   <div class="flex-[1.3]">
-    <img class="w-full h-full aspect-[3/2] rounded-2xl object-cover" src="<?php echo $cakeData["imageUrl"] ?>" alt="">
+  <?php
+  echo'
+    <img class="w-full h-full aspect-[4/3] rounded-2xl object-cover" src="/public/pics/' . $cakeData['imageUrl'] . '" alt="">';
+    ?>
   </div>
   <div id="actions" class="flex flex-[.7] bg-base-100 rounded-2xl p-8 flex-col items-center justify-center">
     <div class="flex flex-row justify-center gap-8 md:gap-24 pb-8">

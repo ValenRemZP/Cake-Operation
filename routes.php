@@ -98,5 +98,37 @@ $routes = [
     'footer' => false,
     'container' => true,
   ],
+  '/dashboard/cakes/delete' => [
+    'view' => 'user/admin/delete-cake.php',
+    'title' => 'Delete cakes',
+    'nav' => true,
+    'footer' => true,
+    'container' => true,
+    'auth' => ['admin'],
+  ],
+  '/dashboard/cakes/delete' => [
+    'view' => 'user/admin/delete-cake.php',
+    'title' => 'Delete cakes',
+    'nav' => true,
+    'footer' => true,
+    'container' => true,
+    'auth' => ['admin'],
+  ], 
+  '/dashboard/cakes/search' => [
+    'view' => 'user/admin/search.php',
+    'title' => 'Search Cakes',
+    'nav' => true,
+    'footer' => true,
+    'container' => true,
+    
+],
+'/account/favorites' => [
+  'view' => 'account/favorites.php',
+  'title' => 'Favorite',
+  'nav' => true,
+  'footer' => true,
+  'container' => true,
+  'auth' => ['user', 'admin'],
+],
 
 ];

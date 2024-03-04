@@ -1,5 +1,3 @@
-
-
 <?php
 require_once LIBRARY . '/util/util.php';
 

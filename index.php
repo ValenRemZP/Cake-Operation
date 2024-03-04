@@ -66,7 +66,7 @@ $containerClasses = $route['container'] ? 'container mx-auto px-2 pt-4 pb-12 md:
 ?>
 
 <!DOCTYPE html>
-<html lang="en" class="bg-red-100 " data-theme='<?php echo $theme; ?>'>
+<html  class="bg-red-100 " data-theme='<?php echo $theme; ?>'>
 
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">

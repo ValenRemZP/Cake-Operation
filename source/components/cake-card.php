@@ -19,7 +19,7 @@ function cakeCard($cake, $shareable = false) {
                 </label>
                 <ul tabindex="0" class="dropdown-content z-[1] p-2 shadow bg-base-100 rounded-box w-26 flex gap-2">
                     <button class="hover:cursor-pointer">
-                        <form method="post" action="/source/lib/account/addfav.php">
+                        <form method="post" action="/source/lib/catalog/addfav.php">
                             <input type="hidden" name="cake_id" value="' . $cake["id"] . '">
                             <input type="hidden" name="refer" value="' . $_SERVER['REQUEST_URI'] . '">
                             <button name="favoriteIt">
@@ -32,7 +32,7 @@ function cakeCard($cake, $shareable = false) {
                         </form>
                     </button>
                     <button name="copy"
-                        onclick="createShareLink(window.location.origin + \'/products/share' . '?id=' . $cake["id"] . '\')">
+                        onclick="createShareLink(window.location.origin + \'/cakes/share' . '?id=' . $cake["id"] . '\')">
 
                         <svg class="w-5 h-5 hover:text-black text-gray-600 inline-block mx-1" aria-hidden="true"
                             xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
@@ -49,7 +49,7 @@ function cakeCard($cake, $shareable = false) {
         <a href="/catalog/cake?id=' . $cake['id'] . '">
             <div id="cake-' . $cake['id'] . '" class="group card card-compact transition hover:opacity-90 bg-base-100 shadow-xl" style="max-width: 300px;">
                 <figure>
-                    <img class="w-full h-50 object-cover" src="' . $cake["imageUrl"] . '" alt="' . $cake["name"] . '" />
+                    <img class="w-full h-48 object-cover" src="/public/pics/' . $cake['imageUrl'] . '" alt="' . $cake["name"] . '" />
                 </figure>
 
                 <div class="card-body transition relative">
