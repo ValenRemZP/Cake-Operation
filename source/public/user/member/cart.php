@@ -1,90 +1,147 @@
 <?php
-// Handle actions (add, delete, update quantity)
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    if (isset($_POST["cart_delete"])) {
-   
-    } elseif (isset($_POST["buy"])) {
-      
-    } elseif (isset($_POST["delete_selected"])) {
-   
-    } elseif (isset($_POST["update_quantity"])) {
-        foreach ($_POST['quantity'] as $itemId => $newQuantity) {
-         
+$status = "";
+
+// Remove item from cart
+if (isset($_POST['action']) && $_POST['action'] == "remove") {
+    if (!empty($_SESSION["cart"])) {
+        foreach ($_SESSION["cart"] as $key => $value) {
+            if ($_POST["ID"] == $value['cake_id']) {
+                unset($_SESSION["cart"][$key]);
+                $status = "<div class='text-green-600'>Product removed from your cart!</div>";
+            }
+            if (empty($_SESSION["cart"])) {
+                unset($_SESSION["cart"]);
+            }
         }
     }
 }
 
-// Fetch user's cart items  MUST FIX THE REQUEST METHODESSS
-if ($user) {
-    $userId = $_SESSION['user']['id'];
-    $cartItems = fetchAll("SELECT * FROM cart WHERE userid = ?", ['type' => 'i', 'value' => $userId]);
-} else {
-    // For guest users
-    $cartItems = isset($_SESSION['guest']['cart']) ? $_SESSION['guest']['cart'] : [];
+// Update item quantity in cart
+if (isset($_POST['action']) && $_POST['action'] == "change") {
+    foreach ($_SESSION["cart"] as &$value) {
+        if ($value['cake_id'] === $_POST["ID"]) {
+            $value['quantity'] = $_POST["quantity"];
+            break;
+        }
+    }
 }
 ?>
 
+<?php
+// Your PHP code here...
+?>
 
+<html>
+<head>
+    <title>Shopping Cart</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Brush Script MT', cursive;
+            background-color: #f4f5f7;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+<div class="container mx-auto py-8">
+    <h2 class="text-3xl mb-4">Your Shopping Cart</h2>
 
-
-<!-- Cart Page Content -->
-<div class="container mx-auto mt-8">
-    <h2 class="text-2xl font-bold mb-4">Your Cart</h2>
-
-    <?php if (empty($cartItems)) : ?>
-        <p>Your cart is empty.</p>
-    <?php else : ?>
-        <form action="/cart" method="post">
-            <table class="min-w-full border border-gray-300">
-                <thead>
-                    <tr>
-                        <th class="py-2 px-4 border-b">Select</th>
-                        <th class="py-2 px-4 border-b">Cake Name</th>
-                        <th class="py-2 px-4 border-b">Price</th>
-                        <th class="py-2 px-4 border-b">Quantity</th>
-                        <th class="py-2 px-4 border-b">Total</th>
-                        <th class="py-2 px-4 border-b">Action</th>
-                    </tr>
-                </thead>
-                <tbody>
+    <?php if (!empty($_SESSION["cart"])) : ?>
+        <div class="overflow-x-auto">
+            <form method='post' id="cartForm">
+                <div class="grid grid-cols-7 gap-x-4 bg-rose-100">
+                    <div class="px-4 py-2 bg-rose-200">Select</div>
+                    <div class="px-4 py-2 bg-rose-200">Cake Pic</div>
+                    <div class="px-4 py-2 bg-rose-200">Cake</div>
+                    <div class="px-4 py-2 bg-rose-200">Quantity</div>
+                    <div class="px-4 py-2 bg-rose-200">Price</div>
+                    <div class="px-4 py-2 bg-rose-200">Total</div>
+                    <div class="px-4 py-2 bg-rose-200">Action</div>
+                    
                     <?php
-                    $totalPrice = 0;
-                    foreach ($cartItems as $item) :
-                        // Fetch cake details using cakeId
-                        $cakeDetails = fetchSin("SELECT * FROM cakes WHERE id = ?", ['type' => 'i', 'value' => $item['cakeId']]);
-
-                        // Check if cakeDetails is not empty before accessing its keys
-                        if (!empty($cakeDetails)) {
-                            $totalItemPrice = $item['quantity'] * $cakeDetails['price'];
-                            $totalPrice += $totalItemPrice;
+                    $total_price = 0;
+                    foreach ($_SESSION["cart"] as $key => $product) :
                     ?>
-                            <tr>
-                                <td class="py-2 px-4 border-b">
-                                    <input type="checkbox" name="selected_items[]" value="<?php echo $item['id']; ?>">
-                                </td>
-                                <td class="py-2 px-4 border-b"><?php echo $cakeDetails['name']; ?></td>
-                                <td class="py-2 px-4 border-b">$<?php echo $cakeDetails['price']; ?></td>
-                                <td class="py-2 px-4 border-b">
-                                    <input type="number" name="quantity[<?php echo $item['id']; ?>]" value="<?php echo $item['quantity']; ?>" min="1">
-                                </td>
-                                <td class="py-2 px-4 border-b">$<?php echo $totalItemPrice; ?></td>
-                                <td class="py-2 px-4 border-b">
-                                    <button type="submit" name="cart_delete" value="<?php echo $item['id']; ?>" class="bg-red-500 text-white py-1 px-2 rounded">Delete</button>
-                                </td>
-                            </tr>
+                    <div class="px-4 py-2">
+                        <input type="checkbox" name="selected_cakes[]" value="<?php echo $product["cake_id"]; ?>" class="product-checkbox" data-price="<?php echo $product["cake_price"]; ?>" data-quantity="<?php echo $product["quantity"]; ?>" <?php echo (isset($_POST['selected_cakes']) && in_array($product['cake_id'], $_POST['selected_cakes'])) ? 'checked' : ''; ?>>
+                    </div>
+                    <div class="px-4 py-2">
+                        <?php if(isset($product["cake_pic"])): ?>
+                            <img src="/public/pics/<?php echo $product["cake_pic"]; ?>" alt="Product Image" class="w-16 h-16 mr-2">
+                        <?php endif; ?>
+                    </div>
+                    <div class="px-4 py-2"><?php echo isset($product["cake_name"]) ? $product["cake_name"] : ""; ?></div>
+                    <div class="px-4 py-2">
+                        <form method='post' action=''>
+                            <input type='hidden' name='ID' value="<?php echo $product["cake_id"]; ?>"/>
+                            <input type='hidden' name='action' value="change"/>
+                            <select name='quantity' onchange="this.form.submit()" class="border border-gray-300 rounded-md px-2 py-1">
+                                <?php for ($i = 1; $i <= 5; $i++) { 
+                                    echo "<option " . ($product["quantity"] == $i ? "selected" : "") . " value='$i'>$i</option>";
+                                } ?>
+                            </select>
+                        </form>
+                    </div>
+                    <div class="px-4 py-2">€<?php echo isset($product["cake_price"]) ? $product["cake_price"] : ""; ?></div>
+                    <div class="px-4 py-2 product-total">€<?php echo isset($product["cake_price"]) && isset($product["quantity"]) ? ($product["cake_price"] * $product["quantity"]) : ""; ?></div>
+                    <div class="px-4 py-2">
+                        <form method='post' action='/Checkout'>
+                            <input type='hidden' name='ID' value="<?php echo isset($product['cake_id']) ? $product['cake_id'] : ""; ?>"/>
+                            <input type='hidden' name='action' value="remove"/>
+                            <button type='submit' class="btn btn-error btn-square" name="delete">
+                                <i class="fa-regular fa-trash-can fa-xl text-red"></i>
+                            </button>
+                        </form>
+                    </div>
                     <?php
-                        }
+                    if(isset($product["cake_price"]) && isset($product["quantity"]) && isset($_POST['selected_cakes']) && in_array($product['cake_id'], $_POST['selected_cakes'])) {
+                        $total_price += ($product["cake_price"] * $product["quantity"]);
+                    }
                     endforeach;
                     ?>
-                </tbody>
-            </table>
+                </div>
+                <div class="mt-4">
+                    <p id="totalPrice" class="text-xl flex justify-center font-semibold">Total: €<?php echo $total_price; ?></p>
+                </div>
+                <div class="flex justify-center gap-x-4 mt-4">
+                    <a href="/" class="btn bg-rose-400 text-white px-4 py-2 rounded">Continue Shopping</a>
+                    <button type="submit" class="btn bg-rose-400 text-white px-4 py-2 rounded">Buy Selected</button>
+                </div>
+            </form>
+        </div>
 
-            <div class="mt-4 flex justify-end">
-                <button type="submit" name="buy" class="btn bg-rose-400">Buy Selected</button>
-                <button type="submit" name="delete_selected" class="ml-4 btn bg-red-500 text-white">Delete Selected</button>
-            </div>
-        </form>
 
-        <p class="mt-4">Total Price: $<?php echo $totalPrice; ?></p>
+    <?php else : ?>
+        <div class="bg-white shadow-md p-4">Your cart is empty!</div>
     <?php endif; ?>
+
+    <div class="mt-4">
+        <?php echo $status; ?>
+    </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const checkboxes = document.querySelectorAll('.product-checkbox');
+        const totalPriceElement = document.getElementById('totalPrice');
+
+        checkboxes.forEach(function (checkbox) {
+            checkbox.addEventListener('change', function () {
+                let total = 0;
+                checkboxes.forEach(function (checkbox) {
+                    if (checkbox.checked) {
+                        const price = parseFloat(checkbox.getAttribute('data-price'));
+                        const quantity = parseInt(checkbox.getAttribute('data-quantity'));
+                        total += price * quantity;
+                    }
+                });
+                totalPriceElement.textContent = 'Total: €' + total.toFixed(2);
+            });
+        });
+    });
+</script>
+
+</body>
+</html>
+
+    
