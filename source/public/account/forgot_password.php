@@ -23,7 +23,7 @@ if(isset($_POST['reset_password'])) {
    
     if ($result->num_rows > 0) {
         // Redirect the user to the password reset page with the email parameter
-        header('Location: /account/forgott?email=' . urlencode($email));
+        header('Location: /source/public/account/password_reset.php?email=' . urlencode($email));
         exit();
     } else {
         // Display an error message if the provided information is incorrect
@@ -31,7 +31,7 @@ if(isset($_POST['reset_password'])) {
     }
 
     // Close the database connection
-    $conn->close();
+    $connection->close();
 }
 ?>
 <style>
