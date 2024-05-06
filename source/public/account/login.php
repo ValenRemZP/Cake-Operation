@@ -2,8 +2,9 @@
 if (isset($_SESSION['user'])) {
   header('Location: /');
   exit();
-} ?>
-     <style>
+}
+?>
+<style>
 body {
   font-family: "Brush Script MT", cursive;
 }
@@ -42,10 +43,10 @@ body {
 
   <div class="w-full text-center mt-8">
     <a class="link text-white" href="/account/register">You don't have an account yet?</a>
-    
   </div>
+  
   <div class="w-full text-center mt-8">
-    <a class="link text-white" href="/account/register">Forgot your password?</a>
     
+    <a class="link text-white" href="/account/forgot">Forgot your password?</a>
   </div>
 </div>

@@ -37,7 +37,7 @@ $cakeData = fetch($query, ['type' => 'i', 'value' => $cakeId]);
         
         </div>
 
-        <p class=" text-xl text-rose-300"> €<?= $cakeData["price"] ?></p>
+        <p class="font-semibold text-xl text-rose-300"> €<?= $cakeData["price"] ?></p>
         <div class="flex-[.7] p-8">
        
         <form method="post" action="/add-cart">
@@ -45,7 +45,7 @@ $cakeData = fetch($query, ['type' => 'i', 'value' => $cakeId]);
   <input type="hidden" name="cake_id" value="<?= $cakeData['id'] ?>">
   <input type="hidden" name="cake_name" value="<?= $cakeData['name'] ?>">
   <input type="hidden" name="cake_price" value="<?= $cakeData['price'] ?>">
-  <a href="/"><button type="submit" name="cart_add" class="btn bg-rose-400 px-4 py-2 rounded">Add to cart</button>
+<button type="submit" name="cart_add" class="btn bg-rose-400 text-white px-4 py-2 rounded">Add to cart</button>
 </form>
           </div>
       </div>

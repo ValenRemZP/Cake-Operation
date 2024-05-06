@@ -1,0 +1,34 @@
+<?php
+session_start();
+require_once $_SERVER['DOCUMENT_ROOT'] . '/config.php';
+
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+ 
+    if (isset($_POST['payment_method'])) {
+        $payment_method = $_POST['payment_method'];
+        
+       
+        switch ($payment_method) {
+            case 'credit_card':
+           
+                break;
+            case 'paypal':
+             
+                break;
+         
+        }
+    
+        header("Location: /thank_you.php");
+        exit();
+    } else {
+        // Payment method not set, handle error or redirect back to checkout page
+        header("Location: /checkout.php?error=payment_method_missing");
+        exit();
+    }
+} else {
+    // Invalid request method, handle error or redirect back to checkout page
+    header("Location: /checkout.php?error=invalid_request");
+    exit();
+}
+?>

@@ -22,15 +22,18 @@ echo '
 <div class="flex flex-col gap-8">
 ';
 ?>
-<form id="searchForm" class="flex flex-row justify-center gap-4">
+<form id="deleteSearchForm" class="flex flex-row justify-center gap-4" action="/dashboard/cakes/search" method="POST">
     <div class="form-control w-full max-w-xs">
-        <input id="searchInput" type="text" name="search" placeholder="Search" class="input input-bordered bg-white w-full">
+        <input id="deleteSearchInput" type="text" name="search" placeholder="Search" class="input input-bordered bg-white w-full">
     </div>
     <button type="submit" class="btn bg-rose-400 text-white px-4 py-2 rounded">Search</button>
 </form>
 
+
+
 <div id="cakesContainer" class="flex flex-col gap-8">
     <?php 
+
     foreach ($cakes as $cake) {
         echo '
         <div class="card card-side bg-base-100 shadow-sm max-h-48">
@@ -56,21 +59,27 @@ echo '
         ';
     }
     ?>
-</div>
+    </div>
+    <script>
+        document.getElementById('deleteSearchForm').addEventListener('submit', function(event) {
+    event.preventDefault(); // Prevent form submission
+    var searchTerm = document.getElementById('deleteSearchInput').value.trim();
+    if (searchTerm !== '') {
+        fetch('/dashboard/cakes/search', {
+            method: 'POST',
+            body: new URLSearchParams(new FormData(document.getElementById('deleteSearchForm')))
+        })
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('cakesContainer').innerHTML = data;
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    }
+});
 
-<script>
-    document.getElementById('searchForm').addEventListener('submit', function(event) {
-        event.preventDefault(); // Prevent form submission
-        var searchTerm = document.getElementById('searchInput').value.trim();
-        if (searchTerm !== '') {
-            fetch('search.php?search=' + searchTerm)
-                .then(response => response.text())
-                .then(data => {
-                    document.getElementById('cakesContainer').innerHTML = data;
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
-        }
-    });
-</script>
+    </script>
+
+
+

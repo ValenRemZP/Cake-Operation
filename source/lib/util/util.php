@@ -3,6 +3,35 @@
 require_once $_SERVER['DOCUMENT_ROOT'] . '/config.php';
 require_once DATABASE . '/connect.php';
 
+function getUserDetailsByEmail($email) {
+  global $connection;
+
+    $sql = "SELECT * FROM users WHERE email = ?";
+    
+   
+    $stmt = $connection->prepare($sql);
+    $stmt->bind_param("s", $email);
+    
+    
+    $stmt->execute();
+    
+    
+    $result = $stmt->get_result();
+
+    if ($result->num_rows > 0) {
+   
+        $row = $result->fetch_assoc();
+        
+        $connection->close();
+      
+        return $row;
+    } else {
+      
+        return false;
+    }
+}
+
+
 function fetch($query, ...$params) {
   global $connection;
 

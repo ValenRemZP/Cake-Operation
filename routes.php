@@ -23,6 +23,20 @@ $routes = [
     'footer' => false,
     'container' => false,
   ],
+  '/account/forgot' => [
+    'view' => 'account/forgot_password.php',
+    'title' => 'Register',
+    'nav' => false,
+    'footer' => false,
+    'container' => false,
+  ],
+  '/account/forgottwo' => [
+    'view' => 'account/password_reset.php',
+    'title' => 'Register',
+    'nav' => false,
+    'footer' => false,
+    'container' => false,
+  ],
   '/account/logout' => [
     'view' => 'account/logout.php',
     'title' => 'Logout',
@@ -80,6 +94,7 @@ $routes = [
     'footer' => true,
     'container' => true,
   ],
+
   
   
   // Error routes
@@ -117,8 +132,8 @@ $routes = [
   '/dashboard/cakes/search' => [
     'view' => 'user/admin/search.php',
     'title' => 'Search Cakes',
-    'nav' => true,
-    'footer' => true,
+    'nav' => false,
+    'footer' => false,
     'container' => true,
     
 ],
@@ -130,5 +145,12 @@ $routes = [
   'container' => true,
   'auth' => ['user', 'admin'],
 ],
-
+'/processpayment' => [
+  'view' => 'user/member/checkout.php',
+  'title' => 'Check out',
+  'nav' => true,
+  'footer' => true,
+  'container' => true,
+  'auth' => ['user', 'admin'],
+],
 ];
