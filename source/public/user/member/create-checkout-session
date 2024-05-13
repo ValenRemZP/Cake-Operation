@@ -1,104 +1,81 @@
 <?php
+
 require_once $_SERVER['DOCUMENT_ROOT'] . '/config.php';
-require_once STRIPE . '/autoload.php';
+require_once DATABASE . '/connect.php';
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Retrieve raw request body
-    $rawData = file_get_contents('php://input');
+// Include TCPDF library
+require_once STRE . '/tcpdf.php'; // Adjust the path accordingly
 
-    // Output raw data for debugging
-    echo $rawData;
-    exit;
-
-    // Decode JSON data
-    $data = json_decode($rawData, true);
-
-    // Check if JSON decoding failed
-    if ($data === null) {
-        http_response_code(400); // Bad request
-        echo json_encode(['error' => 'Failed to decode JSON data']);
-        exit;
-    }
-
-    // Check if 'totalPrice' parameter exists
-    if (!isset($data['totalPrice'])) {
-        http_response_code(400); // Bad request
-        echo json_encode(['error' => 'Missing totalPrice parameter']);
-        exit;
-    }
-
-    // Retrieve total price from the POST request
-    $total_price = $data['totalPrice'];
-
-    // Set your Stripe API key
-    \Stripe\Stripe::setApiKey("sk_test_51PD0PvLptHi8PzrfU6Z2qy8SlRu633Hfsg7pDraaYXLDD1n45s2FvFPDNtwbesT9BvOQvrj610QkZEDz4Hoax6Y80042BD0LO7");
-
-    try {
-        // Create a PaymentIntent to charge the customer
-        $paymentIntent = \Stripe\PaymentIntent::create([
-            'amount' => $total_price * 100, // Amount in cents
-            'currency' => 'EUR',
-            'payment_method_types' => ['card'],
-        ]);
-
-        // Provide client secret to the frontend
-        echo json_encode(['clientSecret' => $paymentIntent->client_secret]);
-    } catch (\Stripe\Exception\ApiErrorException $e) {
-        http_response_code(500);
-        echo json_encode(['error' => $e->getMessage()]);
-    }
+// Check if user is logged in and get their user ID
+if (!isset($_SESSION['user']['id'])) {
+    header("Location: /account/login"); // Redirect to login page
+    exit(); // Stop execution
 }
+
+// Fetch user's shipping address
+$sql = "SELECT street, city, state, zipcode FROM users WHERE id = ?";
+$stmt = $connection->prepare($sql);
+$stmt->bind_param("i", $_SESSION['user']['id']);
+$stmt->execute();
+$stmt->bind_result($street, $city, $state, $zipcode);
+$stmt->fetch();
+$stmt->close();
+
+// Retrieve cart items from session
+$cart_items = isset($_SESSION['cart_items']) ? $_SESSION['cart_items'] : array();
+
+// Calculate total price
+$total_price = 0;
+foreach ($cart_items as $product) {
+    $total_price += ($product['cake_price'] * $product['quantity']);
+}
+
+// Create new PDF instance
+$pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+
+// Set document information
+$pdf->SetCreator('Mary Cooking');
+$pdf->SetAuthor('Mary Cooking');
+$pdf->SetTitle('Invoice');
+$pdf->SetSubject('Invoice');
+
+// Add a page
+$pdf->AddPage();
+
+// Set font
+$pdf->SetFont('helvetica', '', 10);
+
+// Add title
+$pdf->Cell(0, 10, 'MARY COOKING', 0, 1, 'C');
+
+// Add shipping address
+$pdf->Cell(0, 10, 'Shipping Address: ' . $street . ', ' . $city . ', ' . $state . ', ' . $zipcode, 0, 1);
+
+// Add products
+foreach ($cart_items as $product) {
+    $pdf->Cell(0, 10, $product['cake_name'] . ' - Quantity: ' . $product['quantity'] . ' - Price: €' . $product['cake_price'], 0, 1);
+}
+
+// Add total
+$pdf->Cell(0, 10, 'Total: €' . $total_price, 0, 1);
+
+// Add timestamp
+$pdf->Cell(0, 10, 'Date and Time: ' . date('Y-m-d H:i:s'), 0, 1);
+
+// Save the PDF to a temporary file
+$tempFile = tempnam(sys_get_temp_dir(), 'invoice_');
+$pdf->Output($tempFile, 'F');
+$pdf->Close();
+
+// Send the file to the browser
+header('Content-Type: application/pdf');
+header('Content-Disposition: attachment; filename="invoice.pdf"');
+header('Expires: 0');
+header('Cache-Control: must-revalidate');
+header('Pragma: public');
+header('Content-Length: ' . filesize($tempFile));
+readfile($tempFile);
+
+// Delete the temporary file
+unlink($tempFile);
 ?>
-
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Checkout</title>
-    <!-- Add your Stripe publishable key -->
-    <script src="https://js.stripe.com/v3/"></script>
-</head>
-<body>
-    <h1>Checkout</h1>
-
-    <div id="error-message"></div>
-
-    <form id="payment-form">
-        <div id="card-element"></div>
-        <button id="submit">Pay</button>
-    </form>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            var stripe = Stripe('<?php echo "pk_test_51PD0PvLptHi8PzrflFVoWCXpsodGhRlxVMNK0s2DVftnx1VXfV3DDHJ5Ebq22unBWaPp3yc8sTEVm117uQ05Khb700dXeZWomD"; ?>');
-            var elements = stripe.elements();
-            var cardElement = elements.create('card');
-            cardElement.mount('#card-element');
-
-            var paymentForm = document.getElementById('payment-form');
-            var errorElement = document.getElementById('error-message');
-
-            paymentForm.addEventListener('submit', function (event) {
-                event.preventDefault();
-                stripe.confirmCardPayment('<?php echo $paymentIntent->client_secret; ?>', {
-                    payment_method: {
-                        card: cardElement,
-                        billing_details: {
-                            name: 'Customer Name'
-                        }
-                    }
-                }).then(function (result) {
-                    if (result.error) {
-                        errorElement.textContent = result.error.message;
-                    } else {
-                        // Payment successful, redirect to a success page
-                        window.location.href = '/payment-success.php';
-                    }
-                });
-            });
-        });
-    </script>
-</body>
-</html>

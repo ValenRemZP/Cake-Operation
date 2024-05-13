@@ -14,8 +14,9 @@
   define('DATABASE', SRC . '/database');
   define('LIBRARY', SRC . '/lib');
   define('PUBLIC_S', SRC . '/public');
-  define('STRE', ROOT . '/stripe-php-master');
-  define('STRIPE', STRE . '/vendor');
+  define('STRE', ROOT . '/tcpdf');
+
+  
 
   // User structure
   define('USER_STRUCTURE', [

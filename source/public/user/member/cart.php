@@ -1,5 +1,15 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/config.php';
+require_once DATABASE . '/connect.php';
+
+if (!isset($_SESSION['user']['id'])) {
+    ?>
+    <script>
+    window.location.href = "/account/login";
+    </script>
+    <?php
+    exit(); // Stop execution to prevent further code execution
+}
 
 $status = "";
 
@@ -28,7 +38,13 @@ if (isset($_POST['action']) && $_POST['action'] == "change") {
     }
 }
 
+// Store cart items in session
+$_SESSION['cart_items'] = $_SESSION["cart"];
+
 ?>
+
+
+
 
 <html>
 <head>
@@ -114,13 +130,14 @@ if (isset($_POST['action']) && $_POST['action'] == "change") {
 
 
     <div class="flex justify-center gap-x-4 mt-4">
-    <?php if (!empty($_SESSION["cart"])) : ?>
-        <form method='post' action='/processpayment'> 
-            <button type="submit" id="checkoutButton" class="btn bg-rose-400 text-white px-4 py-2 rounded">Process checkout</button>
-        </form>
-    <?php else : ?>
-        <button disabled class="btn bg-gray-300 text-gray-600 cursor-not-allowed px-4 py-2 rounded">Process checkout</button>
-    <?php endif; ?>
+<?php if (!empty($_SESSION["cart"])) : ?>
+    <form method='post' action='/processpayment?total_price=<?php echo $total_price; ?>'>
+    <button type="submit" id="checkoutButton" class="btn bg-rose-400 text-white px-4 py-2 rounded">Process checkout</button>
+</form>
+
+<?php else : ?>
+    <button disabled class="btn bg-gray-300 text-gray-600 cursor-not-allowed px-4 py-2 rounded">Process checkout</button>
+<?php endif; ?>
 </div>
 
 

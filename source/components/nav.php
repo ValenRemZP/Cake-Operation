@@ -1,4 +1,5 @@
 <?php
+ob_start();
 require_once $_SERVER['DOCUMENT_ROOT'] . '/config.php';
 require_once LIBRARY . '/util/util.php';
 
@@ -90,27 +91,13 @@ body{
                   <i class="fa-solid fa-shopping-cart fa-inverse"></i>
               </a>
               <!-- Show cart item count -->
-              <?php
-  $cartCount = 0; 
-
-  if ($user) {
-      $cartInfo = fetchSin("SELECT COUNT(*) AS count FROM cart WHERE userid = ?", ['type' => 'i', 'value' => $user['id']]);
-      if ($cartInfo && array_key_exists('count', $cartInfo)) {
-          $cartCount = $cartInfo['count'];
-      }
-  } else {
-      $cartCount = isset($_SESSION['guest']['cart']) ? count($_SESSION['guest']['cart']) : 0;
-  }
-
-  echo '<span class="badge badge-outline fa-inverse ">' . $cartCount . '</span>';
-
-  ?>
+    
           </div>
     
 
         <!-- User Actions -->
     
- <?php echo isset($_SESSION['user'])
+<?php echo isset($_SESSION['user'])
       ? '
       <details class="dropdown dropdown-end">
         <summary class="m-1 btn btn-ghost btn-circle avatar">
@@ -137,7 +124,8 @@ body{
         </ul>
       </details>
       '
-    : '<a href="/account/login" class="btn btn-ghost bg-white text-rose-400">Login</a>'; ?>
+    : '<a href="/account/login" class="btn btn-ghost bg-white text-rose-400">Login</a>';
+     ?>
     
 
     </div>
