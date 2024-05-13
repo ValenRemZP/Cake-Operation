@@ -41,32 +41,11 @@ Body {
             <img src="<?= $userProfile[0]['profilePicture'] ?>" alt="Profile Picture" class="max-w-full mb-4 rounded-md">
          
 
-      <div class="stat w-30 h-60">
-        <div class="stat-title text-center text-2xl text-rose-300 font-bold">Favorite Products</div>
-        <div class="stat-value text-center text-rose-200">0</div>
-        <div class="stat-desc text-center text-xl text-rose-300">Your count of favorite products</div>
-      </div>
-
-      <div class="stat w-30 h-60">
-        <div class="stat-title text-center font-bold text-rose-300 text-2xl">Ordered Products</div>
-        <div class="stat-value text-center text-rose-200">0</div>
-        <div class="stat-desc text-center text-xl text-rose-300">Your count of ordered products</div>
-      </div>
-
-      <div class="stat w-30 h-60">
-        <div class="stat-title text-center font-bold text-2xl text-rose-300">Purchased Products</div>
-        <div class="stat-value text-center text-rose-200">0</div>
-        <div class="stat-desc text-center text-xl text-rose-300">Your count of purchased products</div>
-        <div class="text-rose-300">
           <br>
           <div class="flex justify-center">
     <a class="btn btn-ghost text-center" href="/account/settings/edit">Edit</a>
 </div>
 
-        </div>
-        
-  </div>
-        </div>
     </body>
     </html>
     <?php

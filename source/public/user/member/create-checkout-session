@@ -1,0 +1,104 @@
+<?php
+require_once $_SERVER['DOCUMENT_ROOT'] . '/config.php';
+require_once STRIPE . '/autoload.php';
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Retrieve raw request body
+    $rawData = file_get_contents('php://input');
+
+    // Output raw data for debugging
+    echo $rawData;
+    exit;
+
+    // Decode JSON data
+    $data = json_decode($rawData, true);
+
+    // Check if JSON decoding failed
+    if ($data === null) {
+        http_response_code(400); // Bad request
+        echo json_encode(['error' => 'Failed to decode JSON data']);
+        exit;
+    }
+
+    // Check if 'totalPrice' parameter exists
+    if (!isset($data['totalPrice'])) {
+        http_response_code(400); // Bad request
+        echo json_encode(['error' => 'Missing totalPrice parameter']);
+        exit;
+    }
+
+    // Retrieve total price from the POST request
+    $total_price = $data['totalPrice'];
+
+    // Set your Stripe API key
+    \Stripe\Stripe::setApiKey("sk_test_51PD0PvLptHi8PzrfU6Z2qy8SlRu633Hfsg7pDraaYXLDD1n45s2FvFPDNtwbesT9BvOQvrj610QkZEDz4Hoax6Y80042BD0LO7");
+
+    try {
+        // Create a PaymentIntent to charge the customer
+        $paymentIntent = \Stripe\PaymentIntent::create([
+            'amount' => $total_price * 100, // Amount in cents
+            'currency' => 'EUR',
+            'payment_method_types' => ['card'],
+        ]);
+
+        // Provide client secret to the frontend
+        echo json_encode(['clientSecret' => $paymentIntent->client_secret]);
+    } catch (\Stripe\Exception\ApiErrorException $e) {
+        http_response_code(500);
+        echo json_encode(['error' => $e->getMessage()]);
+    }
+}
+?>
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout</title>
+    <!-- Add your Stripe publishable key -->
+    <script src="https://js.stripe.com/v3/"></script>
+</head>
+<body>
+    <h1>Checkout</h1>
+
+    <div id="error-message"></div>
+
+    <form id="payment-form">
+        <div id="card-element"></div>
+        <button id="submit">Pay</button>
+    </form>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var stripe = Stripe('<?php echo "pk_test_51PD0PvLptHi8PzrflFVoWCXpsodGhRlxVMNK0s2DVftnx1VXfV3DDHJ5Ebq22unBWaPp3yc8sTEVm117uQ05Khb700dXeZWomD"; ?>');
+            var elements = stripe.elements();
+            var cardElement = elements.create('card');
+            cardElement.mount('#card-element');
+
+            var paymentForm = document.getElementById('payment-form');
+            var errorElement = document.getElementById('error-message');
+
+            paymentForm.addEventListener('submit', function (event) {
+                event.preventDefault();
+                stripe.confirmCardPayment('<?php echo $paymentIntent->client_secret; ?>', {
+                    payment_method: {
+                        card: cardElement,
+                        billing_details: {
+                            name: 'Customer Name'
+                        }
+                    }
+                }).then(function (result) {
+                    if (result.error) {
+                        errorElement.textContent = result.error.message;
+                    } else {
+                        // Payment successful, redirect to a success page
+                        window.location.href = '/payment-success.php';
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

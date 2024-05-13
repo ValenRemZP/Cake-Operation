@@ -153,4 +153,12 @@ $routes = [
   'container' => true,
   'auth' => ['user', 'admin'],
 ],
+'/checkout' => [
+  'view' => '/user/member/create-checkout-session',
+  'title' => 'Check out',
+  'nav' => true,
+  'footer' => true,
+  'container' => true,
+  'auth' => ['user', 'admin'],
+]
 ];

@@ -28,9 +28,6 @@ if (isset($_POST['action']) && $_POST['action'] == "change") {
     }
 }
 
-// Check if any item is selected
-$selectedItems = isset($_POST['selected_cakes']) && is_array($_POST['selected_cakes']) ? $_POST['selected_cakes'] : [];
-$disableCheckout = empty($selectedItems);
 ?>
 
 <html>
@@ -51,8 +48,7 @@ $disableCheckout = empty($selectedItems);
     <?php if (!empty($_SESSION["cart"])) : ?>
         <div class="overflow-x-auto">
             <form method='post' id="cartForm" action="">
-                <div class="grid grid-cols-7 gap-x-4 bg-rose-100">
-                    <div class="px-4 py-2 bg-rose-200">Select</div>
+                <div class="grid grid-cols-6 gap-x-4 bg-rose-100">
                     <div class="px-4 py-2 bg-rose-200">Cake Pic</div>
                     <div class="px-4 py-2 bg-rose-200">Cake</div>
                     <div class="px-4 py-2 bg-rose-200">Quantity</div>
@@ -60,16 +56,9 @@ $disableCheckout = empty($selectedItems);
                     <div class="px-4 py-2 bg-rose-200">Total</div>
                     <div class="px-4 py-2 bg-rose-200">Action</div>
 
-                    <?php
+                    <?php 
                     $total_price = 0;
-                    foreach ($_SESSION["cart"] as $key => $product) :
-                        ?>
-                        <div class="px-4 py-2">
-                            <input type="checkbox" name="selected_cakes[]" value="<?php echo $product["cake_id"]; ?>"
-                                   class="product-checkbox" data-price="<?php echo $product["cake_price"]; ?>"
-                                   data-quantity="<?php echo $product["quantity"]; ?>"
-                                <?php echo (in_array($product['cake_id'], $selectedItems)) ? 'checked' : ''; ?>>
-                        </div>
+                    foreach ($_SESSION["cart"] as $key => $product) : ?>
                         <div class="px-4 py-2">
                             <?php if (isset($product["cake_pic"])): ?>
                                 <img src="/public/pics/<?php echo $product["cake_pic"]; ?>" alt="Product Image"
@@ -93,6 +82,7 @@ $disableCheckout = empty($selectedItems);
                         <div
                             class="px-4 py-2 product-total">€<?php echo isset($product["cake_price"]) && isset($product["quantity"]) ? ($product["cake_price"] * $product["quantity"]) : ""; ?></div>
                         <div class="px-4 py-2">
+                            <a href="/catalog/cake?id=<?php echo $product['cake_id']; ?>" class="btn btn-primary">View cake card</a>
                             <form method='post' action='/cart'>
                                 <input type='hidden' name='ID'
                                        value="<?php echo isset($product['cake_id']) ? $product['cake_id'] : ""; ?>"/>
@@ -103,11 +93,11 @@ $disableCheckout = empty($selectedItems);
                             </form>
                         </div>
                         <?php
-                        if (isset($product["cake_price"]) && isset($product["quantity"]) && in_array($product['cake_id'], $selectedItems)) {
+                        if (isset($product["cake_price"]) && isset($product["quantity"])) {
                             $total_price += ($product["cake_price"] * $product["quantity"]);
                         }
-                    endforeach;
-                    ?>
+                    endforeach; ?>
+
                 </div>
                 <div class="mt-4">
                     <p id="totalPrice" class="text-xl flex justify-center font-semibold">Total: €<?php echo $total_price; ?></p>
@@ -124,32 +114,23 @@ $disableCheckout = empty($selectedItems);
 
 
     <div class="flex justify-center gap-x-4 mt-4">
-        <form method='post' action='/processpayment'>
-            <button type="submit" id="checkoutButton" class="btn bg-rose-400 text-white px-4 py-2 rounded" <?php if ($disableCheckout) echo 'disabled'; ?>>Process checkout</button>
+    <?php if (!empty($_SESSION["cart"])) : ?>
+        <form method='post' action='/processpayment'> 
+            <button type="submit" id="checkoutButton" class="btn bg-rose-400 text-white px-4 py-2 rounded">Process checkout</button>
         </form>
-    </div>
+    <?php else : ?>
+        <button disabled class="btn bg-gray-300 text-gray-600 cursor-not-allowed px-4 py-2 rounded">Process checkout</button>
+    <?php endif; ?>
 </div>
+
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        const checkboxes = document.querySelectorAll('.product-checkbox');
         const totalPriceElement = document.getElementById('totalPrice');
-        const checkoutButton = document.getElementById('checkoutButton');
 
-        checkboxes.forEach(function (checkbox) {
-            checkbox.addEventListener('change', function () {
-                let total = 0;
-                checkboxes.forEach(function (checkbox) {
-                    if (checkbox.checked) {
-                        const price = parseFloat(checkbox.getAttribute('data-price'));
-                        const quantity = parseInt(checkbox.getAttribute('data-quantity'));
-                        total += price * quantity;
-                    }
-                });
-                totalPriceElement.textContent = 'Total: €' + total.toFixed(2);
-                checkoutButton.disabled = !document.querySelector('.product-checkbox:checked');
-            });
-        });
+       
+        let total = <?php echo $total_price; ?>;
+        totalPriceElement.textContent = 'Total: €' + total.toFixed(2);
     });
 </script>
 

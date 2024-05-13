@@ -9,21 +9,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST["cart_add"])) {
         $cakeName = $_POST['cake_name'];
         $cakePrice = $_POST['cake_price'];
 
-        // Add the cake to the shopping cart session    
+ 
         if (!isset($_SESSION['cart'])) {
             $_SESSION['cart'] = [];
         }
 
-        // Check if the cake already exists in the cart
+      
         $existingCakeKey = array_search($cakeId, array_column($_SESSION['cart'], 'cake_id'));
         if ($existingCakeKey !== false) {
-            // If the cake already exists, show a pop-up notification
+            
             echo "<script>alert('You already have this cake in your cart.');</script>";
-            // Redirect back to the index page
+ 
             echo "<script>window.location.href = '/';</script>";
-            exit; // Stop further execution
+            exit; 
         } else {
-            // If the cake doesn't exist, add it to the cart
             $_SESSION['cart'][] = [
                 'cake_pic' => $cakeImage,
                 'cake_id' => $cakeId,

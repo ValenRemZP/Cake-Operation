@@ -120,7 +120,6 @@ body{
         </summary>
         <ul class="mt-2 p-2 shadow menu dropdown-content z-[1] bg-white rounded-box w-52">
           <li><a href="/account/profile" class="justify-between text-xl text-rose-500">Profile</a></li>
-          <li><a href="/source/lib/user/member/change-theme.php" class="text-xl text-rose-500">Switch to ' . $theme . '</a></li>
           <li><a href="/account/favorites" class="text-xl text-rose-500">Favorites</a></li>     
           <div class="divider px-4 my-2"></div> 
           <li><a href="/account/logout"  class="text-xl text-rose-500">Logout</a></li>
