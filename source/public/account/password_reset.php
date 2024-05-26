@@ -1,45 +1,83 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/config.php';
-require_once LIBRARY . '/util/util.php';
+require_once DATABASE . '/connect.php';
 
-// Check if the form is submitted for password reset
-if(isset($_POST['reset_password'])) {
-    $email = $_POST['email'];
+// Check if the form to reset the password has been submitted
+if (isset($_POST['reset_password'])) {
+    $token = $_POST['token'];
     $new_password = $_POST['new_password'];
     
     // Hash the new password
     $hashed_password = password_hash($new_password, PASSWORD_DEFAULT);
     
-    // Update the password in the database
-    $sql = "UPDATE users SET password = ? WHERE email = ?";
-    
+    // Prepare SQL statement to verify the reset token and ensure it hasn't expired
+    $sql = "SELECT email FROM users WHERE reset_token = ? AND reset_token_expiry > NOW()";
     $stmt = $connection->prepare($sql);
-    $stmt->bind_param("ss", $hashed_password, $email);
+    if (!$stmt) {
+        die("Prepare failed: (" . $connection->errno . ") " . $connection->error);
+    }
+    $stmt->bind_param("s", $token);
+    if (!$stmt->execute()) {
+        die("Execute failed: (" . $stmt->errno . ") " . $stmt->error);
+    }
+    $result = $stmt->get_result();
     
-    if ($stmt->execute()) {
-        // Password updated successfully, redirect the user to a login page or any other page
-        header('Location: /account/login');
-        exit();
+    // Check if a matching record is found
+    if ($result->num_rows > 0) {
+        $row = $result->fetch_assoc();
+        $email = $row['email'];
+
+        // Prepare SQL statement to update the user's password and remove the reset token and expiry time
+        $sql = "UPDATE users SET password = ?, reset_token = NULL, reset_token_expiry = NULL WHERE email = ?";
+        $stmt = $connection->prepare($sql);
+        if (!$stmt) {
+            die("Prepare failed: (" . $connection->errno . ") " . $connection->error);
+        }
+        $stmt->bind_param("ss", $hashed_password, $email);
+        
+        if ($stmt->execute()) {
+            // Password updated successfully, redirect to the login page
+            header('Location: /account/login');
+            exit();
+        } else {
+            // Display error message if password reset fails
+            $error_message = "Failed to reset password. Please try again later.";
+        }
     } else {
-        // Error occurred while updating password
-        $error_message = "Failed to reset password. Please try again later.";
+        // Display error message if the token is invalid or expired
+        $error_message = "Invalid or expired token. Please request a new password reset.";
     }
 
-    // Close the statement
     $stmt->close();
-    
-    // Close the database connection
     $connection->close();
 }
 
-// Check if the email parameter is set
-if(isset($_GET['email'])) {
-    $email = $_GET['email'];
-    // Assuming you have a function to retrieve the user's details based on the email
-    // You can fetch other user details from the database if needed
-    $user_details = getUserDetailsByEmail($email);
+// Check if a token is provided in the URL
+if (isset($_GET['token'])) {
+    $token = $_GET['token'];
+
+    // Prepare SQL statement to verify the reset token and ensure it hasn't expired
+    $sql = "SELECT email FROM users WHERE reset_token = ? AND reset_token_expiry > NOW()";
+    $stmt = $connection->prepare($sql);
+    if (!$stmt) {
+        die("Prepare failed: (" . $connection->errno . ") " . $connection->error);
+    }
+    $stmt->bind_param("s", $token);
+    if (!$stmt->execute()) {
+        die("Execute failed: (" . $stmt->errno . ") " . $stmt->error);
+    }
+    $result = $stmt->get_result();
+    
+    // Check if a matching record is found
+    if ($result->num_rows == 0) {
+        // Invalid or expired token, redirect to forgot password page
+        header('Location: /account/forgot');
+        exit();
+    }
+
+    $stmt->close();
 } else {
-    // If the email parameter is not set, redirect the user back to the forgot password page
+    // Redirect to forgot password page if no token is provided
     header('Location: /account/forgot');
     exit();
 }
@@ -91,7 +129,6 @@ if(isset($_GET['email'])) {
             color: #ff6699;
         }
 
-        .form-control input[type="email"],
         .form-control input[type="password"] {
             width: 100%;
             padding: 7px;
@@ -113,16 +150,17 @@ if(isset($_GET['email'])) {
         .btn:hover {
             background-color: #ff4d94;
         }
-        </style>
+    </style>
 </head>
 <body>
     <div class="container">
         <h1>Password Reset</h1>
+        <?php if (isset($error_message)): ?>
+        <div class="text-red-500"><?php echo $error_message; ?></div>
+        <?php endif; ?>
         <form action="/source/public/account/password_reset.php" method="post" class="form">
-            <div class="form-control">
-                <label for="email">Email</label>
-                <input type="email" name="email" value="<?php echo $user_details['email']; ?>" readonly>
-            </div>
+            <!-- Hidden input to pass the reset token -->
+            <input type="hidden" name="token" value="<?php echo htmlspecialchars($token); ?>">
             <div class="form-control">
                 <label for="new_password">New Password</label>
                 <input type="password" name="new_password" placeholder="Enter your new password" required>

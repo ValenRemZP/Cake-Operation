@@ -102,7 +102,7 @@ body{
       <details class="dropdown dropdown-end">
         <summary class="m-1 btn btn-ghost btn-circle avatar">
           <div class="w-10 rounded-full">
-            <img src="https://i.pinimg.com/564x/b1/27/e7/b127e748dee69963b2ef9065a138ad2c.jpg" />
+            <img src="https://static.vecteezy.com/system/resources/previews/024/198/824/original/profile-icon-or-symbol-in-pink-and-white-color-vector.jpg" />
           </div>
         </summary>
         <ul class="mt-2 p-2 shadow menu dropdown-content z-[1] bg-white rounded-box w-52">
@@ -113,7 +113,7 @@ body{
           <div class="divider px-4 mb-2"></div>
           <li>
             <details class="dropdown dropdown-left">
-              <summary class="m-1 text-xl text-rose-500">Admin dashboard (beta)</summary>
+              <summary class="m-1 text-xl text-rose-500">Admin panel</summary>
               <ul class="mr-4 p-2 shadow menu dropdown-content z-[1] bg-base-200 rounded-box w-52">
                 <li><a href="/dashboard/cakes/delete"  class="text-xl text-rose-500">Remove cakes</a></li>
                 <li><a href="/dashboard/cakes/add"  class="text-xl text-rose-500">Add cake</a></li>

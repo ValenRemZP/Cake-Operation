@@ -85,7 +85,7 @@ function insertUser($username, $password, $email, $firstname, $lastname) {
   $userProfileData = insert(
     'INSERT INTO userprofile (profilePicture, theme) VALUES ( ?, ?)',
 
-    ['type' => 's', 'value' => 'https://i.pinimg.com/564x/b1/27/e7/b127e748dee69963b2ef9065a138ad2c.jpg'],
+    ['type' => 's', 'value' => 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.pinterest.com%2Fpin%2F609393393322792039%2F&psig=AOvVaw1oQk2KsPXPM5VlhkLc9O4K&ust=1716017675697000&source=images&cd=vfe&opi=89978449&ved=0CBIQjRxqFwoTCKjh6pOWlIYDFQAAAAAdAAAAABAE'],
     ['type' => 's', 'value' => 'light'],
   
   );

@@ -6,11 +6,8 @@ require_once DATABASE . '/connect.php';
 // Include TCPDF library
 require_once STRE . '/tcpdf.php'; // Adjust the path accordingly
 
-// Check if user is logged in and get their user ID
-if (!isset($_SESSION['user']['id'])) {
-    header("Location: /account/login"); // Redirect to login page
-    exit(); // Stop execution
-}
+
+
 
 // Fetch user's shipping address
 $sql = "SELECT street, city, state, zipcode FROM users WHERE id = ?";

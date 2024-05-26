@@ -58,14 +58,6 @@ $routes = [
     'footer' => true,
     'container' => true,
   ],
-  // product share
-  '/products/share' => [
-    'view' => 'catalog/share.php',
-    'title' => 'Cakes',
-    'nav' => false,
-    'footer' => false,
-    'container' => true,
-  ],
   '/catalog/cake' => [
     'view' => 'catalog/cake.php',
     'title' => 'Cake',
