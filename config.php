@@ -14,7 +14,7 @@
   define('DATABASE', SRC . '/database');
   define('LIBRARY', SRC . '/lib');
   define('PUBLIC_S', SRC . '/public');
-  define('STRE', ROOT . '/tcpdf');
+  define('FPDF', ROOT . '/fpdf186');
 
   
 

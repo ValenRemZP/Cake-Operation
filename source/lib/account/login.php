@@ -3,6 +3,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config.php';
 require_once DATABASE . '/connect.php';
 require_once LIBRARY . '/util/util.php';
 
+
 if (isset($_POST['login'])) {
   session_start();
   login($_POST);
@@ -33,13 +34,24 @@ function login($formData) {
     return;
   }
   
-  $_SESSION['user'] = USER_STRUCTURE;
-  $_SESSION['user']['id'] = $auth['id'];
-  $_SESSION['user']['email'] = $auth['email'];
-  $_SESSION['user']['username'] = $auth['username'];
-  $_SESSION['user']['theme'] = $auth['theme'];
- 
+  $_SESSION['user'] = [
+    'id' => $auth['id'],
+    'email' => $auth['email'],
+    'username' => $auth['username'],
+    'theme' => $auth['theme']
+  ];
   
+  // Fetch user roles
+  $roles = fetchall(
+    'SELECT roleid FROM userrole_mapping WHERE userid = ?',
+    [
+      'type' => 'i',
+      'value' => $auth['id'],
+    ]
+  );
+
+  $_SESSION['roles'] = array_column($roles, 'roleid');
+
   header('Location: /');
   exit();
 }
@@ -53,7 +65,7 @@ function authenticate($email, $password) {
     [
       'type' => 's',
       'value' => $email,
-    ],
+    ]
   );
 
   if (!$data) {

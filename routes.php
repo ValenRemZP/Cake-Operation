@@ -111,7 +111,15 @@ $routes = [
     'nav' => true,
     'footer' => true,
     'container' => true,
-    'auth' => ['admin'],
+
+  ],
+  '/account/history' => [
+    'view' => 'user/member/purchase-history.php',
+    'title' => 'Delete cakes',
+    'nav' => true,
+    'footer' => true,
+    'container' => true,
+
   ],
   '/dashboard/cakes/delete' => [
     'view' => 'user/admin/delete-cake.php',
@@ -119,7 +127,7 @@ $routes = [
     'nav' => true,
     'footer' => true,
     'container' => true,
-    'auth' => ['admin'],
+    
   ], 
   '/dashboard/cakes/search' => [
     'view' => 'user/admin/search.php',
@@ -129,13 +137,29 @@ $routes = [
     'container' => true,
     
 ],
+'/dashboard/admin' => [
+  'view' => 'user/admin/add-admin.php',
+  'title' => 'Admin',
+  'nav' => true,
+    'footer' => true,
+  'container' => true,
+  
+],
+'/dashboard/category' => [
+  'view' => 'user/admin/add-category.php',
+  'title' => 'Category',
+  'nav' => true,
+    'footer' => true,
+  'container' => true,
+  
+],
 '/account/favorites' => [
   'view' => 'account/favorites.php',
   'title' => 'Favorite',
   'nav' => true,
   'footer' => true,
   'container' => true,
-  'auth' => ['user', 'admin'],
+ 
 ],
 '/processpayment' => [
   'view' => 'user/member/checkout.php',
@@ -143,7 +167,7 @@ $routes = [
   'nav' => true,
   'footer' => true,
   'container' => true,
-  'auth' => ['user', 'admin'],
+
 ],
 '/checkout' => [
   'view' => '/user/member/create-checkout-session',
@@ -151,6 +175,6 @@ $routes = [
   'nav' => true,
   'footer' => true,
   'container' => true,
-  'auth' => ['user', 'admin'],
+  
 ]
 ];

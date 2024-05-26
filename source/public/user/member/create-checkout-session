@@ -1,17 +1,24 @@
 <?php
-
 require_once $_SERVER['DOCUMENT_ROOT'] . '/config.php';
 require_once DATABASE . '/connect.php';
+require_once FPDF . '/fpdf.php';
 
-// Include TCPDF library
-require_once STRE . '/tcpdf.php'; // Adjust the path accordingly
+// Check if user is logged in and get their user ID
+if (!isset($_SESSION['user']['id'])) {
+    echo "<script>window.location.href = '/account/login';</script>";
+    exit();
+}
 
-
-
+// Start output buffering
+ob_start();
 
 // Fetch user's shipping address
 $sql = "SELECT street, city, state, zipcode FROM users WHERE id = ?";
 $stmt = $connection->prepare($sql);
+if (!$stmt) {
+    echo "Error preparing SQL: " . mysqli_error($connection);
+    exit();
+}
 $stmt->bind_param("i", $_SESSION['user']['id']);
 $stmt->execute();
 $stmt->bind_result($street, $city, $state, $zipcode);
@@ -20,59 +27,59 @@ $stmt->close();
 
 // Retrieve cart items from session
 $cart_items = isset($_SESSION['cart_items']) ? $_SESSION['cart_items'] : array();
-
-// Calculate total price
+// Calculate total price from cart items
 $total_price = 0;
-foreach ($cart_items as $product) {
-    $total_price += ($product['cake_price'] * $product['quantity']);
+foreach ($cart_items as $item) {
+    $total_price += $item['quantity'] * $item['cake_price'];
 }
 
-// Create new PDF instance
-$pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+// Clear any previously buffered output
+ob_clean();
 
-// Set document information
-$pdf->SetCreator('Mary Cooking');
-$pdf->SetAuthor('Mary Cooking');
-$pdf->SetTitle('Invoice');
-$pdf->SetSubject('Invoice');
-
-// Add a page
+// Create PDF instance
+$pdf = new FPDF();
 $pdf->AddPage();
+$pdf->SetFont('Arial', '', 12);
 
-// Set font
-$pdf->SetFont('helvetica', '', 10);
+// Add user's shipping address
+$pdf->Cell(0, 10, 'Shipping Address:', 0, 1);
+$pdf->Cell(0, 10, utf8_decode($street), 0, 1);
+$pdf->Cell(0, 10, utf8_decode($city . ', ' . $state . ' ' . $zipcode), 0, 1);
 
-// Add title
-$pdf->Cell(0, 10, 'MARY COOKING', 0, 1, 'C');
-
-// Add shipping address
-$pdf->Cell(0, 10, 'Shipping Address: ' . $street . ', ' . $city . ', ' . $state . ', ' . $zipcode, 0, 1);
-
-// Add products
-foreach ($cart_items as $product) {
-    $pdf->Cell(0, 10, $product['cake_name'] . ' - Quantity: ' . $product['quantity'] . ' - Price: €' . $product['cake_price'], 0, 1);
+// Add cart items
+$pdf->Cell(0, 10, 'Cart Items:', 0, 1);
+foreach ($cart_items as $item) {
+    $pdf->Cell(0, 10, utf8_decode($item['cake_name'] . ' - Quantity: ' . $item['quantity']), 0, 1);
 }
 
-// Add total
-$pdf->Cell(0, 10, 'Total: €' . $total_price, 0, 1);
+// Add total price
+$pdf->Cell(0, 10, utf8_decode('Total: €' . number_format($total_price, 2)), 0, 1, 'R');
 
-// Add timestamp
-$pdf->Cell(0, 10, 'Date and Time: ' . date('Y-m-d H:i:s'), 0, 1);
+// Output the PDF as attachment to the browser and save it to the 'bills' folder
+$pdfFilename = 'bills/Bill.pdf';
+$pdf->Output('F', $pdfFilename);
 
-// Save the PDF to a temporary file
-$tempFile = tempnam(sys_get_temp_dir(), 'invoice_');
-$pdf->Output($tempFile, 'F');
-$pdf->Close();
+// Save purchase details to the database
+$sql = "INSERT INTO userpurchase (userid, purchaseTime, price, pdfFilename) VALUES (?, NOW(), ?, ?)";
+$stmt = $connection->prepare($sql);
+if (!$stmt) {
+    echo "Error preparing SQL: " . mysqli_error($connection);
+    exit();
+}
+$stmt->bind_param("ids", $_SESSION['user']['id'], $total_price, $pdfFilename);
+$stmt->execute();
+if ($stmt->error) {
+    echo "Error executing SQL: " . $stmt->error;
+    exit();
+}
+$stmt->close();
 
-// Send the file to the browser
-header('Content-Type: application/pdf');
-header('Content-Disposition: attachment; filename="invoice.pdf"');
-header('Expires: 0');
-header('Cache-Control: must-revalidate');
-header('Pragma: public');
-header('Content-Length: ' . filesize($tempFile));
-readfile($tempFile);
-
-// Delete the temporary file
-unlink($tempFile);
+// End buffering and discard output
+ob_end_flush();
+?>
+<script>
+window.location.href = "/account/login";
+</script>
+<?php
+exit();
 ?>

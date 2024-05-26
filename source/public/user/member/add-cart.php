@@ -8,7 +8,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST["cart_add"])) {
         $cakeId = $_POST['cake_id'];
         $cakeName = $_POST['cake_name'];
         $cakePrice = $_POST['cake_price'];
-
+        ?>
+        <script>
+        window.location.href = "/account/login";
+        </script>
+        <?php
  
         if (!isset($_SESSION['cart'])) {
             $_SESSION['cart'] = [];

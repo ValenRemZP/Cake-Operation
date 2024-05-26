@@ -1,4 +1,5 @@
 <?php
+
 require_once $_SERVER['DOCUMENT_ROOT'] . '/config.php';
 require_once DATABASE . '/connect.php';
 
@@ -38,13 +39,11 @@ if (isset($_POST['action']) && $_POST['action'] == "change") {
     }
 }
 
-// Store cart items in session
-$_SESSION['cart_items'] = $_SESSION["cart"];
-
+// Store cart items in session if cart exists
+if (isset($_SESSION["cart"])) {
+    $_SESSION['cart_items'] = $_SESSION["cart"];
+}
 ?>
-
-
-
 
 <html>
 <head>
@@ -128,28 +127,24 @@ $_SESSION['cart_items'] = $_SESSION["cart"];
         <?php echo $status; ?>
     </div>
 
-
     <div class="flex justify-center gap-x-4 mt-4">
-<?php if (!empty($_SESSION["cart"])) : ?>
-    <form method='post' action='/processpayment?total_price=<?php echo $total_price; ?>'>
-    <button type="submit" id="checkoutButton" class="btn bg-rose-400 text-white px-4 py-2 rounded">Process checkout</button>
-</form>
+        <?php if (!empty($_SESSION["cart"])) : ?>
+            <form method='post' action='/processpayment?total_price=<?php echo $total_price; ?>'>
+                <button type="submit" id="checkoutButton" class="btn bg-rose-400 text-white px-4 py-2 rounded">Process checkout</button>
+            </form>
+        <?php else : ?>
+            <button disabled class="btn bg-gray-300 text-gray-600 cursor-not-allowed px-4 py-2 rounded">Process checkout</button>
+        <?php endif; ?>
+    </div>
 
-<?php else : ?>
-    <button disabled class="btn bg-gray-300 text-gray-600 cursor-not-allowed px-4 py-2 rounded">Process checkout</button>
-<?php endif; ?>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const totalPriceElement = document.getElementById('totalPrice');
+
+            let total = <?php echo $total_price; ?>;
+            totalPriceElement.textContent = 'Total: €' + total.toFixed(2);
+        });
+    </script>
 </div>
-
-
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const totalPriceElement = document.getElementById('totalPrice');
-
-       
-        let total = <?php echo $total_price; ?>;
-        totalPriceElement.textContent = 'Total: €' + total.toFixed(2);
-    });
-</script>
-
 </body>
 </html>

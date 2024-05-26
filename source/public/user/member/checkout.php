@@ -37,7 +37,7 @@ $cart_items = isset($_SESSION['cart_items']) ? $_SESSION['cart_items'] : array()
 <html>
 <head>
     <title>Checkout</title>
-    <!-- Include your CSS styles here -->
+
 </head>
 <body>
 <div class="container mx-auto py-8">
@@ -60,14 +60,16 @@ $cart_items = isset($_SESSION['cart_items']) ? $_SESSION['cart_items'] : array()
     </div>
 
     <div class="mt-4">
-        <p>Total: €<?php echo $total_price; ?></p>
-    </div>
+    <div class="text-lg font-bold mb-2">Total:</div>
+    <p class="text-xl font-semibold">€<?php echo number_format($total_price, 2); ?></p>
+</div>
 
     <?php if (!empty($street) && !empty($city) && !empty($state) && !empty($zipcode)) : ?>
         <!-- Display button to continue checkout process -->
-        <form method="post" action="/checkout"> <!-- Create process_payment.php for handling payment -->
-            <button type="submit" class="btn bg-rose-400 text-white px-4 py-2 rounded">Confirm Purchase</button>
-        </form>
+        <form method="post" action="/checkout">
+    <button type="submit" class="btn bg-rose-400 text-white px-4 py-2 rounded">Confirm Purchase</button>
+</form>
+
     <?php endif; ?>
 </div>
 </body>
