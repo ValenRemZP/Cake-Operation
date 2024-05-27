@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 17, 2024 at 09:37 AM
+-- Generation Time: May 27, 2024 at 09:14 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -65,7 +65,7 @@ CREATE TABLE `cakes` (
 INSERT INTO `cakes` (`id`, `category_id`, `name`, `description`, `price`, `imageUrl`, `updatedAt`, `createdAt`) VALUES
 (6, 4, 'Chocolate ganache cake', 'Chocolate Ganache cake is a fluffy and tender layered cake complete with butterscotch buttercream and a homemade butterscotch sauce drizzle.', 56.00, 'chocolate-ganache-cake-FI.jpg', '2024-05-13 08:02:13', '2024-05-13 08:02:13'),
 (7, 5, 'Buttercream Cake', 'Buttercream Cake is a fluffy and tender layered cake complete with butterscotch buttercream and a homemade butterscotch sauce drizzle.', 50.99, 'ButtercreamCake_11_30bea246-9d9f-4a33-82ce-8ac6539f8727.webp', '2024-05-13 08:03:30', '2024-05-13 08:03:30'),
-(8, 5, 'DDD', 'DDD', 24.00, 'Broklyn.png', '2024-05-13 12:59:08', '2024-05-13 12:59:08');
+(9, 4, 'Cake', 'Delicious', 12.00, 'raf_360x360_075_t_fafafa_ca443f4786-removebg-preview.png', '2024-05-17 12:57:03', '2024-05-17 12:57:03');
 
 -- --------------------------------------------------------
 
@@ -99,7 +99,9 @@ INSERT INTO `favorites` (`userid`, `cakeid`) VALUES
 (5, 3),
 (5, 4),
 (5, 7),
-(8, 6);
+(8, 6),
+(5, 9),
+(11, 9);
 
 -- --------------------------------------------------------
 
@@ -118,14 +120,16 @@ CREATE TABLE `userprofile` (
 --
 
 INSERT INTO `userprofile` (`id`, `profilePicture`, `theme`) VALUES
-(1, 'https://i.pinimg.com/564x/b1/27/e7/b127e748dee69963b2ef9065a138ad2c.jpg', 'light'),
-(2, 'https://i.pinimg.com/564x/b1/27/e7/b127e748dee69963b2ef9065a138ad2c.jpg', 'light'),
-(3, 'https://i.pinimg.com/564x/b1/27/e7/b127e748dee69963b2ef9065a138ad2c.jpg', 'light'),
-(4, 'https://i.pinimg.com/564x/b1/27/e7/b127e748dee69963b2ef9065a138ad2c.jpg', 'light'),
-(5, 'https://static.vecteezy.com/system/resources/previews/024/198/824/original/profile-icon-or-symbol-in-pink-and-white-color-vector.jpg', 'light'),
-(6, 'https://i.pinimg.com/564x/b1/27/e7/b127e748dee69963b2ef9065a138ad2c.jpg', 'light'),
-(7, 'https://i.pinimg.com/564x/b1/27/e7/b127e748dee69963b2ef9065a138ad2c.jpg', 'light'),
-(8, 'https://i.pinimg.com/564x/b1/27/e7/b127e748dee69963b2ef9065a138ad2c.jpg', 'light');
+(10, 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.pinterest.com%2Fpin%2F609393393322792039%2F&psig=AOvVaw1oQk2KsPXPM5VlhkLc9O4K&ust=1716017675697000&source=images&cd=vfe&opi=89978449&ved=0CBIQjRxqFwoTCKjh6pOWlIYDFQAAAAAdAAAAABAE', 'light'),
+(11, 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.pinterest.com%2Fpin%2F609393393322792039%2F&psig=AOvVaw1oQk2KsPXPM5VlhkLc9O4K&ust=1716017675697000&source=images&cd=vfe&opi=89978449&ved=0CBIQjRxqFwoTCKjh6pOWlIYDFQAAAAAdAAAAABAE', 'light'),
+(12, 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.pinterest.com%2Fpin%2F609393393322792039%2F&psig=AOvVaw1oQk2KsPXPM5VlhkLc9O4K&ust=1716017675697000&source=images&cd=vfe&opi=89978449&ved=0CBIQjRxqFwoTCKjh6pOWlIYDFQAAAAAdAAAAABAE', 'light'),
+(13, 'https://static.vecteezy.com/system/resources/previews/024/198/824/original/profile-icon-or-symbol-in-pink-and-white-color-vector.jpg', 'light'),
+(14, 'https://static.vecteezy.com/system/resources/previews/024/198/824/original/profile-icon-or-symbol-in-pink-and-white-color-vector.jpg', 'light'),
+(15, 'https://static.vecteezy.com/system/resources/previews/024/198/824/original/profile-icon-or-symbol-in-pink-and-white-color-vector.jpg', 'light'),
+(16, 'https://static.vecteezy.com/system/resources/previews/024/198/824/original/profile-icon-or-symbol-in-pink-and-white-color-vector.jpg', 'light'),
+(17, 'https://static.vecteezy.com/system/resources/previews/024/198/824/original/profile-icon-or-symbol-in-pink-and-white-color-vector.jpg', 'light'),
+(18, 'https://static.vecteezy.com/system/resources/previews/024/198/824/original/profile-icon-or-symbol-in-pink-and-white-color-vector.jpg', 'light'),
+(19, 'https://static.vecteezy.com/system/resources/previews/024/198/824/original/profile-icon-or-symbol-in-pink-and-white-color-vector.jpg', 'light');
 
 -- --------------------------------------------------------
 
@@ -137,11 +141,16 @@ CREATE TABLE `userpurchase` (
   `id` int(11) NOT NULL,
   `userid` int(11) NOT NULL,
   `purchaseTime` datetime NOT NULL,
-  `cakeId` int(11) NOT NULL,
   `price` int(11) NOT NULL,
-  `CakeName` int(11) NOT NULL,
-  `cakeImage` int(11) NOT NULL
+  `pdfFilename` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `userpurchase`
+--
+
+INSERT INTO `userpurchase` (`id`, `userid`, `purchaseTime`, `price`, `pdfFilename`) VALUES
+(7, 16, '2024-05-27 01:39:55', 51, 'bills/Bill.pdf');
 
 -- --------------------------------------------------------
 
@@ -150,10 +159,19 @@ CREATE TABLE `userpurchase` (
 --
 
 CREATE TABLE `userrole_mapping` (
-  `id` int(11) NOT NULL,
   `userid` int(11) NOT NULL,
   `roleid` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `userrole_mapping`
+--
+
+INSERT INTO `userrole_mapping` (`userid`, `roleid`) VALUES
+(16, 3),
+(17, 3),
+(18, 3),
+(19, 3);
 
 -- --------------------------------------------------------
 
@@ -173,6 +191,7 @@ CREATE TABLE `users` (
   `state` text NOT NULL,
   `zipcode` text NOT NULL,
   `reset_token` varchar(255) NOT NULL,
+  `reset_token_expiry` varchar(255) NOT NULL,
   `updatedAt` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `createdAt` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -181,12 +200,11 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `username`, `email`, `password`, `firstname`, `lastname`, `street`, `city`, `state`, `zipcode`, `reset_token`, `updatedAt`, `createdAt`) VALUES
-(2, 'mari', 'marilili@gmail.com', '$argon2id$v=19$m=65536,t=4,p=1$QVI2ODV1V1ZYOGtwZTB4OQ$IYxL6UzU7iWKWbQjCvDssIr4F56DeINj20zaiF8WPlM', 'aaaaaaaa', 'adasd', '', '', '', '', '', '2023-11-26 22:30:42', '2023-11-26 22:30:42'),
-(3, 'lili', 'mail@gmail.com', '$argon2id$v=19$m=65536,t=4,p=1$SFE3NlhUMnlNekhpa2VtWA$4tno1MQYyeCPZRAcyDDu6EKOFhuNTnbZEiEJgMrnQ1Q', 'asdasd', 'adasd', '', '', '', '', '', '2023-11-26 22:32:18', '2023-11-26 22:32:18'),
-(4, 'cake', 'cake@gmail.com', '$argon2id$v=19$m=65536,t=4,p=1$T3Jhcld0SzdrTXIwNU9BTg$ZCy0q7f/6LBncWuBYU2/hGqzmAgaP8E5Isduv1HYUuE', 'ss', 'adasd', '', '', '', '', '', '2023-11-26 22:35:11', '2023-11-26 22:35:11'),
-(5, 'Remimito', 'Remi@gmail.com', '$argon2id$v=19$m=65536,t=4,p=1$YVZOODVELmpEejNhWXdhaw$egTP1vSvd1dQo2hXZl0//hsS8cV4Idwpc/Hv34yN2BI', 'Remi', 'Lopez', 'xxx', 'xxx', 'xxx', 'xxx', '', '2024-05-13 01:18:21', '2024-05-13 01:11:36'),
-(8, 'cat', 'cat@gmail.com', '$2y$10$sYfw0vPkulHnvwlCbQnmxe.YXs.8qRi1RjiABDgf8sAUyaFcBaNTi', 'cat', 'cat', 'Ss', 'S', 'SD', 'DD', '', '2024-05-13 12:59:30', '2024-05-13 12:56:33');
+INSERT INTO `users` (`id`, `username`, `email`, `password`, `firstname`, `lastname`, `street`, `city`, `state`, `zipcode`, `reset_token`, `reset_token_expiry`, `updatedAt`, `createdAt`) VALUES
+(16, 'a', 'kussulp@gmail.com', '$2y$10$wulLOPPe9DPN7E3E43Re..D4r9SFHIgyyIL7Gf79RtIJkBS1fOqr6', 'a', 'a', 's', 's', 's', 's', '4de7de926effe7139f93f4524081127d', '2024-05-27 10:11:56', '2024-05-27 07:11:56', '2024-05-26 22:51:22'),
+(17, 'z', 'Remi@gmail.com', '$argon2id$v=19$m=65536,t=4,p=1$QmtGZi4veVBEMjIxMXVnZA$wxVOjSP7K9usgPUu8ZWnBzbL6io9a5Z3EQk9XriIQT4', 'z', 'z', '', '', '', '', '', '', '2024-05-26 22:51:47', '2024-05-26 22:51:47'),
+(18, 'd', 'cat@gmail.com', '$argon2id$v=19$m=65536,t=4,p=1$Q1N1SGo2QnhXazZOdWRXVA$lxOtkl4Hj+y/hso3YIpR/5DdGzmnfiOUjKzjxiedC8c', 'd', 'd', '', '', '', '', '', '', '2024-05-26 23:02:29', '2024-05-26 23:02:29'),
+(19, 'admin ', 'admin@gmail.com', '$argon2id$v=19$m=65536,t=4,p=1$ZWw2T3BPb3JqcDVYRjNNdg$eIImKtLMVbFeofGs+O1kzOmNDhP01yqSL6K/IAsS7Uk', 'admin', 'admin', '', '', '', '', '', '', '2024-05-27 07:00:41', '2024-05-27 07:00:41');
 
 -- --------------------------------------------------------
 
@@ -205,7 +223,6 @@ CREATE TABLE `user_role` (
 
 INSERT INTO `user_role` (`id`, `name`) VALUES
 (3, 'admin'),
-(1, 'guest'),
 (2, 'user');
 
 --
@@ -232,17 +249,15 @@ ALTER TABLE `cakes`
 ALTER TABLE `cakes` ADD FULLTEXT KEY `idx_name_description` (`name`,`description`);
 
 --
--- Indexes for table `cart`
---
-ALTER TABLE `cart`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `userid` (`userid`),
-  ADD KEY `cakeId` (`cakeId`);
-
---
 -- Indexes for table `userprofile`
 --
 ALTER TABLE `userprofile`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `userpurchase`
+--
+ALTER TABLE `userpurchase`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -267,42 +282,31 @@ ALTER TABLE `user_role`
 -- AUTO_INCREMENT for table `cakecategories`
 --
 ALTER TABLE `cakecategories`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `cakes`
 --
 ALTER TABLE `cakes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
-
---
--- AUTO_INCREMENT for table `cart`
---
-ALTER TABLE `cart`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `userprofile`
 --
 ALTER TABLE `userprofile`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+
+--
+-- AUTO_INCREMENT for table `userpurchase`
+--
+ALTER TABLE `userpurchase`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
-
---
--- Constraints for dumped tables
---
-
---
--- Constraints for table `cart`
---
-ALTER TABLE `cart`
-  ADD CONSTRAINT `fk_cart_cakeId` FOREIGN KEY (`cakeId`) REFERENCES `cakes` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_cart_userid` FOREIGN KEY (`userid`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

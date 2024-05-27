@@ -3,15 +3,18 @@
 require_once $_SERVER['DOCUMENT_ROOT'] . '/config.php';
 require_once DATABASE . '/connect.php';
 require ROOT . '/vendor/autoload.php';
-
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
+
+require_once $_SERVER['DOCUMENT_ROOT'] . '/config.php';
+require_once DATABASE . '/connect.php';
+require ROOT . '/vendor/autoload.php';
 
 if (isset($_POST['reset_password'])) {
     $email = $_POST['email'];
     $first_name = $_POST['first_name'];
     $last_name = $_POST['last_name'];
-    
+
     $sql = "SELECT * FROM users WHERE email = ? AND firstname = ? AND lastname = ?";
     $stmt = $connection->prepare($sql);
     if (!$stmt) {
@@ -22,13 +25,11 @@ if (isset($_POST['reset_password'])) {
         die("Execute failed: (" . $stmt->errno . ") " . $stmt->error);
     }
     $result = $stmt->get_result();
-    
-    if ($result->num_rows > 0) {
-        // User exists, generate a reset token
-        $token = bin2hex(random_bytes(16)); // Generate a random token
-        $expiry_time = date("Y-m-d H:i:s", strtotime('+1 hour')); // Set expiry time to 1 hour from now
 
-        // Insert token into database
+    if ($result->num_rows > 0) {
+        $token = bin2hex(random_bytes(16));
+        $expiry_time = date("Y-m-d H:i:s", strtotime('+1 hour'));
+
         $sql = "UPDATE users SET reset_token = ?, reset_token_expiry = ? WHERE email = ?";
         $stmt = $connection->prepare($sql);
         if (!$stmt) {
@@ -38,8 +39,7 @@ if (isset($_POST['reset_password'])) {
         if (!$stmt->execute()) {
             die("Execute failed: (" . $stmt->errno . ") " . $stmt->error);
         }
-        
-        // Send reset link to the user's email
+
         $reset_link = "http://localhost:3000/account/forgottwo?token=" . $token;
         $subject = "Password Reset Request";
         $message = "Hi $first_name, click the following link to reset your password: $reset_link";
@@ -47,20 +47,17 @@ if (isset($_POST['reset_password'])) {
         $mail = new PHPMailer(true);
 
         try {
-            // Server settings
             $mail->isSMTP();
-            $mail->Host = 'smtp.gmail.com'; // Set the SMTP server to send through
+            $mail->Host = 'smtp.gmail.com';
             $mail->SMTPAuth = true;
             $mail->Username = 'lacnioritaarmy@gmail.com'; // SMTP username
-          $mail->Password = 'nkwl gjxh kehj kyxw'; // Use the generated App Password here
-          $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+            $mail->Password = 'soim jlcj hbav fcvv'; // SMTP password or app password
+            $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
             $mail->Port = 587;
 
-            // Recipients
             $mail->setFrom('no-reply@MaryCooking.com', 'Mary Cooking');
             $mail->addAddress($email, $first_name . ' ' . $last_name);
 
-            // Content
             $mail->isHTML(true);
             $mail->Subject = $subject;
             $mail->Body    = $message;
